@@ -1,6 +1,6 @@
 use std::{
     fs::File,
-    io::{Read, Write},
+    io::{Read, Write, Seek},
 };
 
 /// Represents a type of file that we support encoding a message into.
@@ -27,6 +27,7 @@ impl SupportedFileType {
     }
 }
 
+/// A wrapper for File that includes what type of file it is.
 pub struct EncodedFile {
     file: File,
     file_type: SupportedFileType,
@@ -49,6 +50,12 @@ impl EncodedFile {
 impl Read for EncodedFile {
     fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
         self.file.read(buf)
+    }
+}
+
+impl Seek for EncodedFile {
+    fn seek(&mut self, pos: std::io::SeekFrom) -> std::io::Result<u64> {
+        self.file.seek(pos)
     }
 }
 
