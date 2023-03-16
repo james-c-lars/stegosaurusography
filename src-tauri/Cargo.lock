@@ -2195,7 +2195,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "stegasaurusography"
+name = "stegosaurusography"
 version = "0.0.0"
 dependencies = [
  "serde",
