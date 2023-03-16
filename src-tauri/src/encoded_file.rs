@@ -1,28 +1,23 @@
 use std::{
     fs::File,
-    io::{Read, Write, Seek},
+    io::{Read, Seek, Write},
+    path::PathBuf,
 };
 
 /// Represents a type of file that we support encoding a message into.
 #[derive(Clone, Copy)]
 pub enum SupportedFileType {
     PNG,
-    TXT,
 }
 
 impl SupportedFileType {
     /// Finds the file type from a file's name.
     ///
     /// Returns None if the file type is not supported.
-    pub fn from_file_name(file_name: String) -> Option<SupportedFileType> {
-        let file_name = file_name.to_lowercase();
-
-        if file_name.ends_with(".png") {
-            Some(SupportedFileType::PNG)
-        } else if file_name.ends_with(".txt") {
-            Some(SupportedFileType::TXT)
-        } else {
-            None
+    pub fn from_file_path(file_path: PathBuf) -> Option<SupportedFileType> {
+        match file_path.extension()?.to_ascii_lowercase().to_str()? {
+            "png" => Some(SupportedFileType::PNG),
+            _ => None,
         }
     }
 }
@@ -35,8 +30,8 @@ pub struct EncodedFile {
 
 impl EncodedFile {
     /// Constructs a new EncodedFile.
-    pub fn new(file: File, file_name: String) -> Option<EncodedFile> {
-        let file_type = SupportedFileType::from_file_name(file_name)?;
+    pub fn new(file: File, file_path: PathBuf) -> Option<EncodedFile> {
+        let file_type = SupportedFileType::from_file_path(file_path)?;
 
         Some(EncodedFile { file, file_type })
     }

@@ -1,4 +1,4 @@
-use std::fs::File;
+use std::{fs::File, path::PathBuf};
 
 use crate::encoded_file::{EncodedFile, SupportedFileType};
 
@@ -10,8 +10,8 @@ pub struct Decoder {
 
 impl Decoder {
     /// Constructs a new Decoder.
-    pub fn new(input_file: File, input_file_name: String, output_file: File) -> Option<Decoder> {
-        let encoded_file = EncodedFile::new(input_file, input_file_name)?;
+    pub fn new(input_file: File, input_file_path: PathBuf, output_file: File) -> Option<Decoder> {
+        let encoded_file = EncodedFile::new(input_file, input_file_path)?;
 
         Some(Decoder {
             input_file: encoded_file,
@@ -23,7 +23,6 @@ impl Decoder {
     pub fn read_encoded_file(&mut self) -> Result<(), String> {
         match self.input_file.file_type() {
             SupportedFileType::PNG => todo!(),
-            SupportedFileType::TXT => todo!(),
         }
     }
 }
