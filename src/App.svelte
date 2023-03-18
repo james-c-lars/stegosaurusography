@@ -6,7 +6,7 @@
     <h1>Stegasaurusography, the most dino-mic way to transfer messages!</h1>
 
     <div class="row">
-        <Encoder/>
+        <Encoder />
     </div>
 </main>
 

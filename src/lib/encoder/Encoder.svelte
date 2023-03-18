@@ -1,7 +1,7 @@
 <script lang="ts">
     import FileOpenInput from "../shared/FileOpenInput.svelte";
     import FileSaveInput from "../shared/FileSaveInput.svelte";
-    import {invoke} from "@tauri-apps/api";
+    import { invoke } from "@tauri-apps/api";
 
     let baseFile: string | undefined = undefined;
     let secretFile: string | undefined = undefined;
@@ -17,22 +17,28 @@
 </script>
 
 <div class="encoder-view">
-    <FileOpenInput bind:selectedFile={baseFile} dialogTitle="Select Base File"/>
+    <FileOpenInput
+        bind:selectedFile={baseFile}
+        dialogTitle="Select Base File"
+    />
     <p>Base File: {baseFile}</p>
 
-    <FileOpenInput bind:selectedFile={secretFile} dialogTitle="Select Secret File"/>
+    <FileOpenInput
+        bind:selectedFile={secretFile}
+        dialogTitle="Select Secret File"
+    />
     <p>Secret File: {secretFile}</p>
 
-    {#if (baseFile)}
+    {#if baseFile}
         <FileSaveInput
-                bind:selectedFile={encodedFile}
-                dialogTitle="Save Encoded File"
-                inputFileExtension={baseFile.split(".").pop()}
+            bind:selectedFile={encodedFile}
+            dialogTitle="Save Encoded File"
+            inputFileExtension={baseFile.split(".").pop()}
         />
         <p>Encoded File: {encodedFile}</p>
     {/if}
 
-    {#if (baseFile && secretFile && encodedFile)}
+    {#if baseFile && secretFile && encodedFile}
         <button on:click={encode}>ENCODE!</button>
     {/if}
 </div>

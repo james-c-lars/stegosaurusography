@@ -3,19 +3,23 @@ module.exports = {
     extends: [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
+        "plugin:svelte/recommended",
         "plugin:prettier/recommended",
     ],
     parser: "@typescript-eslint/parser",
-    plugins: ["@typescript-eslint", "svelte3"],
+    plugins: ["@typescript-eslint"],
+    parserOptions: {
+        extraFileExtensions: [".svelte"],
+    },
     overrides: [
         {
-            files: ["**/*.svelte"],
-            processor: "svelte3/svelte3",
+            files: ["*.svelte"],
+            parser: "svelte-eslint-parser",
+            parserOptions: {
+                parser: "@typescript-eslint/parser",
+            },
         },
     ],
-    settings: {
-        "svelte3/typescript": true,
-    },
     ignorePatterns: ["src-tauri/target/**"],
     root: true,
 };

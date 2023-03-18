@@ -1,27 +1,22 @@
 <script lang="ts">
-    import {open} from '@tauri-apps/api/dialog';
+    import { open } from "@tauri-apps/api/dialog";
     import FileInput from "./FileInput.svelte";
 
     export let selectedFile: string | undefined = undefined;
     export let dialogTitle: string | undefined = undefined;
 
-    function selectFile(): Promise<string> {
+    function selectFunction(): Promise<string> {
         return open({
             title: dialogTitle,
             multiple: false,
             filters: [
                 {
                     name: "Image",
-                    extensions: [
-                        "jpg",
-                        "jpeg",
-                        "png",
-                        "svg"
-                    ]
-                }
-            ]
-        }).then(file => file as string);
+                    extensions: ["jpg", "jpeg", "png", "svg"],
+                },
+            ],
+        }).then((file) => file as string);
     }
 </script>
 
-<FileInput bind:dialogTitle={dialogTitle} bind:selectedFile={selectedFile} selectFunction={selectFile}/>
+<FileInput bind:dialogTitle bind:selectedFile {selectFunction} />
