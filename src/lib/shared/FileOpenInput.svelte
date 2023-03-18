@@ -3,12 +3,11 @@
     import FileInput from "./FileInput.svelte";
 
     export let selectedFile: string | undefined = undefined;
-    export let dialogTitle: string | undefined = undefined;
+    export const dialogTitle = "Open File";
 
     function selectFunction(): Promise<string> {
         return open({
             title: dialogTitle,
-            multiple: false,
             filters: [
                 {
                     name: "Image",
@@ -19,4 +18,4 @@
     }
 </script>
 
-<FileInput bind:dialogTitle bind:selectedFile {selectFunction} />
+<FileInput {dialogTitle} bind:selectedFile {selectFunction} />

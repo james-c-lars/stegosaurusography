@@ -3,8 +3,8 @@
     import FileInput from "./FileInput.svelte";
 
     export let selectedFile: string | undefined = undefined;
-    export let dialogTitle: string | undefined = undefined;
-    export let inputFileExtension: string | undefined = undefined;
+    export const dialogTitle = "Save File";
+    export const inputFileExtension = "";
 
     function selectFunction(): Promise<string> {
         return save({
@@ -19,4 +19,4 @@
     }
 </script>
 
-<FileInput bind:dialogTitle bind:selectedFile {selectFunction} />
+<FileInput {dialogTitle} bind:selectedFile {selectFunction} />

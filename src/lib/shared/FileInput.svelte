@@ -1,10 +1,13 @@
 <script lang="ts">
-    export let dialogTitle: string | undefined = undefined;
+    export const dialogTitle = "File Input";
     export let selectedFile: string | undefined = undefined;
-    export let selectFunction: (() => Promise<string>) | undefined = undefined;
+    export const selectFunction: (() => Promise<string>) | undefined =
+        undefined;
 
     async function launchSelectDialog() {
-        selectedFile = await selectFunction();
+        if (selectFunction) {
+            selectedFile = await selectFunction();
+        }
     }
 </script>
 
