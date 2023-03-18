@@ -5,4 +5,5 @@ const app = new App({
     target: document.getElementById("app"),
 });
 
+// noinspection JSUnusedGlobalSymbols
 export default app;
