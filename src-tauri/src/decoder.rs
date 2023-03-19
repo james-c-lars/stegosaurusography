@@ -1,28 +1,27 @@
 use std::{fs::File, path::PathBuf};
 
-use crate::encoded_file::{EncodedFile, SupportedFileType};
+use crate::{error::Error, file_types::encoded_file::EncodedFile};
 
 /// Handles the steganographic process of decoding an encoded file.
 pub struct Decoder {
-    input_file: EncodedFile,
+    encoded_file: EncodedFile,
     output_file: File,
 }
 
 impl Decoder {
     /// Constructs a new Decoder.
-    pub fn new(input_file: File, input_file_path: PathBuf, output_file: File) -> Option<Decoder> {
-        let encoded_file = EncodedFile::new(input_file, input_file_path)?;
+    pub fn new(encoded_file_path: PathBuf, output_file_path: PathBuf) -> Result<Decoder, Error> {
+        let encoded_file = EncodedFile::open(encoded_file_path)?;
+        let output_file = File::create(output_file_path)?;
 
-        Some(Decoder {
-            input_file: encoded_file,
+        Ok(Decoder {
+            encoded_file,
             output_file,
         })
     }
 
-    /// Decodes the input file, and writes the results to the output file.
-    pub fn read_encoded_file(&mut self) -> Result<(), String> {
-        match self.input_file.file_type() {
-            SupportedFileType::PNG => todo!(),
-        }
+    /// Decodes the encoded file, and writes the results to the output file.
+    pub fn decode(&mut self) -> Result<(), Error> {
+        self.encoded_file.decode_to(&mut self.output_file)
     }
 }

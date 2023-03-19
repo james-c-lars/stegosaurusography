@@ -1,3 +1,4 @@
 pub mod decoder;
-mod encoded_file;
 pub mod encoder;
+pub mod error;
+pub mod file_types;
