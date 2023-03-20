@@ -62,3 +62,8 @@ impl BaseFile {
         }
     }
 }
+
+/// Gets the properties of a file including its type and how much space is available.
+pub fn get_properties(base_file_path: PathBuf) -> Result<FileProperties, Error> {
+    Ok(BaseFile::open(base_file_path)?.get_properties()?)
+}

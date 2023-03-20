@@ -3,12 +3,7 @@
 
 use std::fs::File;
 
-use stegosaurusography::{
-    decoder::Decoder,
-    encoder::Encoder,
-    error::Error,
-    file_types::base_file::{BaseFile, FileProperties},
-};
+use stegosaurusography::{get_properties, Decoder, Encoder, Error, FileProperties};
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -42,7 +37,7 @@ async fn decode(encoded_file: &str, output_file: &str) -> Result<(), Error> {
 async fn base_file_properties(base_file: &str) -> Result<FileProperties, Error> {
     println!("File property request received!");
 
-    Ok(BaseFile::open(base_file.into())?.get_properties()?)
+    get_properties(base_file.into())
 }
 
 /// Gets the size of a file.
