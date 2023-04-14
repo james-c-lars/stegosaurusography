@@ -3,7 +3,7 @@
     import FileInput from "./FileInput.svelte";
 
     export let selectedFile: string | undefined = undefined;
-    export const dialogTitle = "Open File";
+    export let dialogTitle = "Open File";
 
     function selectFunction(): Promise<string> {
         return open({

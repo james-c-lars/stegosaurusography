@@ -3,10 +3,10 @@
     import FileInput from "./FileInput.svelte";
 
     export let selectedFile: string | undefined = undefined;
-    export const dialogTitle = "Save File";
-    export const inputFileExtension = "";
+    export let dialogTitle = "Save File";
+    export let inputFileExtension = "";
 
-    function selectFunction(): Promise<string> {
+    function selectFunction(): Promise<string | undefined> {
         return save({
             title: dialogTitle,
             filters: [
@@ -15,7 +15,7 @@
                     extensions: [inputFileExtension],
                 },
             ],
-        }).then((file) => file);
+        }).then((file) => file ?? undefined);
     }
 </script>
 
