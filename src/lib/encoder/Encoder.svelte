@@ -17,16 +17,10 @@
 </script>
 
 <div class="encoder-view">
-    <FileOpenInput
-        bind:selectedFile={baseFile}
-        dialogTitle="Select Base File"
-    />
+    <FileOpenInput bind:selectedFile={baseFile} dialogTitle="Select Base File" />
     <p>Base File: {baseFile}</p>
 
-    <FileOpenInput
-        bind:selectedFile={secretFile}
-        dialogTitle="Select Secret File"
-    />
+    <FileOpenInput bind:selectedFile={secretFile} dialogTitle="Select Secret File" />
     <p>Secret File: {secretFile}</p>
 
     {#if baseFile}
