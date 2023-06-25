@@ -2,9 +2,9 @@
     import { save } from "@tauri-apps/api/dialog";
     import FileInput from "./FileInput.svelte";
 
-    export let selectedFile: string | undefined = undefined;
+    export let selectedFile: string | undefined;
     export let dialogTitle = "Save File";
-    export let inputFileExtension = "";
+    export let inputFileExtensions: string[];
 
     function selectFunction(): Promise<string | undefined> {
         return save({
@@ -12,7 +12,7 @@
             filters: [
                 {
                     name: "Base File Type",
-                    extensions: [inputFileExtension],
+                    extensions: inputFileExtensions,
                 },
             ],
         }).then((file) => file ?? undefined);

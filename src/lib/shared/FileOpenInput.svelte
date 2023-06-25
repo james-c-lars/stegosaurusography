@@ -2,7 +2,7 @@
     import { open } from "@tauri-apps/api/dialog";
     import FileInput from "./FileInput.svelte";
 
-    export let selectedFile: string | undefined = undefined;
+    export let selectedFile: string | undefined;
     export let dialogTitle = "Open File";
 
     function selectFunction(): Promise<string> {

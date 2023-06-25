@@ -14,6 +14,10 @@
             encodedFile,
         });
     }
+
+    function fileExtension(fileName: string): string {
+        return fileName.split(".").pop() ?? "";
+    }
 </script>
 
 <div class="encoder-view">
@@ -27,7 +31,7 @@
         <FileSaveInput
             bind:selectedFile={encodedFile}
             dialogTitle="Save Encoded File"
-            inputFileExtension={baseFile.split(".").pop()}
+            inputFileExtensions={[fileExtension(baseFile)]}
         />
         <p>Encoded File: {encodedFile}</p>
     {/if}
