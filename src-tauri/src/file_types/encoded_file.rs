@@ -24,7 +24,7 @@ impl EncodedFile {
     /// Decodes the secret file inside of this one to the output file.
     pub fn decode_to(&self, output_file: &mut File) -> Result<(), Error> {
         match self.file.file_type() {
-            SupportedFileType::PNG => png::decode(&self.file, output_file),
+            SupportedFileType::Png => png::decode(&self.file, output_file),
         }
     }
 }

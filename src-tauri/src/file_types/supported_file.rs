@@ -11,7 +11,7 @@ use crate::error::Error;
 /// Represents a type of file that we support encoding a secret file into.
 #[derive(Clone, Copy, Serialize)]
 pub enum SupportedFileType {
-    PNG,
+    Png,
 }
 
 impl SupportedFileType {
@@ -20,7 +20,7 @@ impl SupportedFileType {
     /// Returns None if the file type is not supported.
     pub fn from_file_path(file_path: PathBuf) -> Option<SupportedFileType> {
         match file_path.extension()?.to_ascii_lowercase().to_str()? {
-            "png" => Some(SupportedFileType::PNG),
+            "png" => Some(SupportedFileType::Png),
             _ => None,
         }
     }

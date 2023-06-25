@@ -33,7 +33,7 @@ impl BaseFile {
     /// Returns the number of bytes available to encode a file.
     pub fn available_space(&self) -> Result<u64, Error> {
         match self.file.file_type() {
-            SupportedFileType::PNG => png::available_size_of(&self.file),
+            SupportedFileType::Png => png::available_size_of(&self.file),
         }
     }
 
@@ -58,12 +58,12 @@ impl BaseFile {
         }
 
         match self.file.file_type() {
-            SupportedFileType::PNG => png::encode(&self.file, secret_file, output_file),
+            SupportedFileType::Png => png::encode(&self.file, secret_file, output_file),
         }
     }
 }
 
 /// Gets the properties of a file including its type and how much space is available.
 pub fn get_properties(base_file_path: PathBuf) -> Result<FileProperties, Error> {
-    Ok(BaseFile::open(base_file_path)?.get_properties()?)
+    BaseFile::open(base_file_path)?.get_properties()
 }
