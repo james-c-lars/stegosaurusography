@@ -5,8 +5,8 @@
     export let selectedFile: string | undefined;
     export let dialogTitle = "Open File";
 
-    function selectFunction(): Promise<string> {
-        return open({
+    async function selectFunction(): Promise<string> {
+        let file = await open({
             title: dialogTitle,
             filters: [
                 {
@@ -14,7 +14,9 @@
                     extensions: ["jpg", "jpeg", "png", "svg"],
                 },
             ],
-        }).then((file) => file as string);
+        });
+
+        return file as string;
     }
 </script>
 
