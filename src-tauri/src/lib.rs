@@ -13,3 +13,5 @@ pub use file_types::base_file::{get_properties, FileProperties};
 ///
 /// These bytes will represent how many bytes in total are encoded.
 const HEADER_BYTES: u64 = 8;
+
+pub use error::Result;

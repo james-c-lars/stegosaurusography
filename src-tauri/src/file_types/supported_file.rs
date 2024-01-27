@@ -1,7 +1,7 @@
+use std::path::Path;
 use std::{
     fs::File,
     ops::{Deref, DerefMut},
-    path::Path,
 };
 
 use image::ImageFormat;
@@ -19,7 +19,8 @@ impl SupportedFileType {
     /// Finds the file type from a file's name.
     ///
     /// Returns None if the file type is not supported.
-    pub fn from_file_path(file_path: &Path) -> Option<SupportedFileType> {
+    pub fn from_file_path<P: AsRef<Path>>(file_path: P) -> Option<SupportedFileType> {
+        let file_path = file_path.as_ref();
         let extension = file_path.extension()?;
 
         let maybe_file_path =
@@ -49,12 +50,12 @@ impl SupportedFile {
     /// Attempts to open an existing file.
     ///
     /// Returns an error if the file isn't a supported type or if the file can't be opened.
-    pub fn open(file_path: &Path) -> Result<SupportedFile, Error> {
-        let file = File::open(file_path)?;
+    pub fn open<P: AsRef<Path>>(file_path: P) -> Result<SupportedFile, Error> {
+        let file = File::open(&file_path)?;
 
-        match SupportedFileType::from_file_path(file_path) {
+        match SupportedFileType::from_file_path(&file_path) {
             Some(file_type) => Ok(SupportedFile { file, file_type }),
-            None => Err(Error::UnsupportedFileType(file_path.into())),
+            None => Err(Error::UnsupportedFileType(file_path.as_ref().into())),
         }
     }
 

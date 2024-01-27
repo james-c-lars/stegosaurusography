@@ -49,7 +49,7 @@ impl BaseFile {
     }
 
     /// Encodes the secret file into this base file and outputs the results.
-    pub fn encode_to(&self, secret_file: &File, output_file: &mut File) -> Result<(), Error> {
+    pub fn encode_to(&self, secret_file: &File, output_file: &mut File) -> crate::Result<()> {
         log::trace!("Beginning encoding process");
         let available_size = self.available_space()?;
         let secret_file_size = secret_file.metadata()?.len();

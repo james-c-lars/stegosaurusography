@@ -1,4 +1,7 @@
-use std::{fs::File, io::{BufWriter, Write}};
+use std::{
+    fs::File,
+    io::{BufWriter, Write},
+};
 
 use image::{DynamicImage, GenericImageView, Pixel};
 use itertools::Itertools;
@@ -14,7 +17,7 @@ use crate::{
 use super::reader_from_supported_file;
 
 /// Decodes the encoded image, and writes the results to the output file.
-pub fn decode(encoded_image: &SupportedFile, output_file: &mut File) -> Result<(), Error> {
+pub fn decode(encoded_image: &SupportedFile, output_file: &mut File) -> crate::Result<()> {
     // Getting the image that contains the secret
     let reader = reader_from_supported_file(encoded_image);
     let image = reader.decode()?;

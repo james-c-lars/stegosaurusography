@@ -1,15 +1,16 @@
-use image::{io::Reader, DynamicImage, GenericImageView, Pixel};
 use std::{fs::File, io::BufReader};
 
-use crate::{Error, HEADER_BYTES};
-
-mod decode;
-mod encode;
+use image::{io::Reader, DynamicImage, GenericImageView, Pixel};
 
 pub use decode::decode;
 pub use encode::encode;
 
+use crate::{Error, HEADER_BYTES};
+
 use super::supported_file::SupportedFile;
+
+mod decode;
+mod encode;
 
 /// The number of channels in a pixel that aren't an alpha channel.
 const NON_ALPHA_CHANNELS: u8 = <DynamicImage as GenericImageView>::Pixel::CHANNEL_COUNT - 1;
@@ -34,7 +35,7 @@ pub fn available_size_of(file: &SupportedFile) -> Result<u64, Error> {
 /// Iterates over the coordinates in an image in a deterministic order.
 ///
 /// The first two u32 values are the x and y coordinate. The last value is which channel is next.
-fn coord_iter(dimensions: (u32, u32)) -> impl Iterator<Item=(u32, u32, u8)> {
+fn coord_iter(dimensions: (u32, u32)) -> impl Iterator<Item = (u32, u32, u8)> {
     let (width, height) = dimensions;
     (0..width).flat_map(move |x| {
         (0..height).flat_map(move |y| (0..NON_ALPHA_CHANNELS).map(move |c| (x, y, c)))
@@ -45,17 +46,18 @@ fn coord_iter(dimensions: (u32, u32)) -> impl Iterator<Item=(u32, u32, u8)> {
 fn reader_from_supported_file(file: &SupportedFile) -> Reader<BufReader<&File>> {
     Reader::with_format(
         BufReader::new(file as &File),
-        file.image_type().unwrap_or_else(|| panic!("We don't call image functions on a non-image. Actual file_type={:?}", file.file_type())),
+        file.image_type().unwrap_or_else(|| {
+            panic!(
+                "We don't call image functions on a non-image. Actual file_type={:?}",
+                file.file_type()
+            )
+        }),
     )
 }
 
 #[cfg(test)]
 mod tests {
-    use std::{
-        fs::File,
-        io::Read,
-        path::{Path, PathBuf},
-    };
+    use std::{fs::File, io::Read, path::Path};
 
     use crate::{
         file_types::{
@@ -66,39 +68,61 @@ mod tests {
     };
 
     #[test]
-    fn size_of() {
-        let path = Path::new("./test_data/stick.png");
-        let file = SupportedFile::open(path).unwrap();
+    fn size_of() -> crate::Result<()> {
+        let file = SupportedFile::open("./test_data/stick.png")?;
 
         assert_eq!(available_size_of(&file).unwrap(), 98_304 - HEADER_BYTES);
+
+        Ok(())
     }
 
     #[test]
-    fn can_encode_and_decode() {
-        let base_image = SupportedFile::open(&PathBuf::from("./test_data/stick.png")).unwrap();
-        let secret_file = File::open("./test_data/story.txt").unwrap();
-        let mut output_image = File::create("./test_data/stick_with_secret.png").unwrap();
-        encode(&base_image, &secret_file, &mut output_image).unwrap();
-        drop(output_image);
+    fn can_encode_and_decode() -> crate::Result<()> {
+        can_encode(
+            "./test_data/stick.png",
+            "./test_data/story.txt",
+            "./test_data/stick_with_secret.png",
+        )?;
+        can_decode(
+            "./test_data/stick_with_secret.png",
+            "./test_data/decoded_story.txt",
+        )?;
 
-        let encoded_file =
-            SupportedFile::open(&PathBuf::from("./test_data/stick_with_secret.png")).unwrap();
-        let mut output_file = File::create("./test_data/decoded_story.txt").unwrap();
-        decode(&encoded_file, &mut output_file).unwrap();
-        drop(output_file);
+        assert_files_equal("./test_data/story.txt", "./test_data/decoded_story.txt")?;
 
-        let mut original_secret = Vec::new();
-        let original_length = File::open("./test_data/story.txt")
-            .unwrap()
-            .read_to_end(&mut original_secret)
-            .unwrap();
-        let mut decoded_secret = Vec::new();
-        let decoded_length = File::open("./test_data/decoded_story.txt")
-            .unwrap()
-            .read_to_end(&mut decoded_secret)
-            .unwrap();
+        Ok(())
+    }
 
-        assert_eq!(original_length, decoded_length);
-        assert_eq!(original_secret, decoded_secret);
+    fn can_encode<P: AsRef<Path>>(base_image: P, secret: P, output_image: P) -> crate::Result<()> {
+        let base_image = SupportedFile::open(base_image)?;
+        let secret_file = File::open(secret)?;
+        let mut output_image = File::create(output_image)?;
+        encode(&base_image, &secret_file, &mut output_image)?;
+
+        Ok(())
+    }
+
+    fn can_decode<P: AsRef<Path>>(encoded_file: P, output_file: P) -> crate::Result<()> {
+        let encoded_file = SupportedFile::open(encoded_file)?;
+        let mut output_file = File::create(output_file)?;
+        decode(&encoded_file, &mut output_file)?;
+
+        Ok(())
+    }
+
+    fn assert_files_equal<P: AsRef<Path>>(file1: P, file2: P) -> crate::Result<()> {
+        let file1 = file_contents(file1)?;
+        let file2 = file_contents(file2)?;
+
+        assert_eq!(file1, file2);
+
+        Ok(())
+    }
+
+    fn file_contents<P: AsRef<Path>>(file: P) -> crate::Result<Vec<u8>> {
+        let mut file_contents = vec![];
+        File::open(file)?.read_to_end(&mut file_contents)?;
+
+        Ok(file_contents)
     }
 }

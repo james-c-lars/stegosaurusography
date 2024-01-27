@@ -46,7 +46,7 @@ impl Encoder {
         base_file_path: &Path,
         secret_file_path: &Path,
         output_file_path: &Path,
-    ) -> Result<(), Error> {
+    ) -> crate::Result<()> {
         let canonicalized_base = canonicalize(base_file_path)?;
         let canonicalized_secret = canonicalize(secret_file_path)?;
         let canonicalized_output = canonicalize(output_file_path)?;
@@ -67,7 +67,7 @@ impl Encoder {
     }
 
     /// Encodes the hidden file into the base file, and writes the results to the output file.
-    pub fn encode(&mut self) -> Result<(), Error> {
+    pub fn encode(&mut self) -> crate::Result<()> {
         self.base_file
             .encode_to(&self.secret_file, &mut self.output_file)
     }

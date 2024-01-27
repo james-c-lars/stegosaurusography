@@ -1,15 +1,13 @@
-use image::{GenericImage, GenericImageView, Pixel, Rgba};
 use std::{
     fs::File,
     io::{BufReader, BufWriter, Error as IOError, Read},
 };
 
-use crate::{
-    error::Error,
-    file_types::{
-        image::{coord_iter, reader_from_supported_file, TWO_BIT_MASK},
-        supported_file::SupportedFile,
-    },
+use image::{GenericImage, GenericImageView, Pixel, Rgba};
+
+use crate::file_types::{
+    image::{coord_iter, reader_from_supported_file, TWO_BIT_MASK},
+    supported_file::SupportedFile,
 };
 
 /// Encodes the hidden file into the base image, and writes the results to the output image.
@@ -17,12 +15,13 @@ pub fn encode(
     base_image: &SupportedFile,
     secret_file: &File,
     output_image: &mut File,
-) -> Result<(), Error> {
+) -> crate::Result<()> {
     // Getting the image we're going to encode with the secret
     log::trace!("Parsing the base image");
     let reader = reader_from_supported_file(base_image);
     let format = reader.format().expect("We just guessed the format");
-    let mut image = reader.decode()?; // image is mut since we'll be editing it in place
+    let mut image = reader.decode()?;
+    // image is mut since we'll be editing it in place
     log::trace!("Parsed image: {image:?}");
 
     // Getting the data from the secret file. Reading it 2 bits at a time, as that's how much we can store in a pixel

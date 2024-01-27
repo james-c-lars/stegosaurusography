@@ -1,7 +1,10 @@
 use std::{io::Error as IOError, path::Path};
 
+use crate::error;
 use image::ImageError;
 use serde::Serialize;
+
+pub type Result<T> = std::result::Result<T, error::Error>;
 
 /// Different errors associated with Encoding and Decoding files.
 #[derive(Debug, Serialize)]

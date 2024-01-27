@@ -22,7 +22,7 @@ impl EncodedFile {
     }
 
     /// Decodes the secret file inside this one to the output file.
-    pub fn decode_to(&self, output_file: &mut File) -> Result<(), Error> {
+    pub fn decode_to(&self, output_file: &mut File) -> crate::Result<()> {
         log::trace!("Beginning the decoding process");
         match self.file.file_type() {
             SupportedFileType::Png => image::decode(&self.file, output_file),
