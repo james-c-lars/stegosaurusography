@@ -93,7 +93,7 @@ mod tests {
     fn size_of() -> crate::Result<()> {
         let file = SupportedFile::open(base_file())?;
 
-        assert_eq!(available_size_of(&file).unwrap(), 98_304 - HEADER_BYTES);
+        assert_eq!(available_size_of(&file)?, 98_304 - HEADER_BYTES);
 
         Ok(())
     }
