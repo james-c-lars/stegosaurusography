@@ -1,4 +1,4 @@
 pub mod base_file;
 pub mod encoded_file;
-mod png;
+mod image;
 pub mod supported_file;

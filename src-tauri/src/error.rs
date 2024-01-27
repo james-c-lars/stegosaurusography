@@ -1,9 +1,10 @@
 use std::{io::Error as IOError, path::PathBuf};
 
+use image::ImageError;
 use serde::Serialize;
 
 /// Different errors associated with Encoding and Decoding files.
-#[derive(Serialize)]
+#[derive(Debug, Serialize)]
 #[serde(tag = "type")]
 pub enum Error {
     IOError(String),
@@ -12,7 +13,9 @@ pub enum Error {
         available_size: u64,
         secret_file_size: u64,
     },
-    DuplicateFiles(DuplicateEnum),
+    DuplicateFiles(WhichDuplicates),
+    ImageError(String),
+    CorruptedFile(CorruptionType),
 }
 
 impl From<IOError> for Error {
@@ -21,11 +24,28 @@ impl From<IOError> for Error {
     }
 }
 
+impl From<ImageError> for Error {
+    fn from(value: ImageError) -> Self {
+        if let ImageError::IoError(io_error) = value {
+            return io_error.into();
+        }
+
+        Error::ImageError(value.to_string())
+    }
+}
+
 /// Represents different sets of files that may be duplicates when encoding.
-#[derive(Serialize)]
-pub enum DuplicateEnum {
+#[derive(Debug, Serialize)]
+pub enum WhichDuplicates {
     BaseAndSecret,
     SecretAndOutput,
     BaseAndOutput,
     All,
+}
+
+/// Represents how an input file was corrupted when decoding.
+#[derive(Debug, Serialize)]
+pub enum CorruptionType {
+    IncorrectHeader,
+    FileTooSmallForHeader,
 }

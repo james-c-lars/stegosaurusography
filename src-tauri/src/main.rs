@@ -18,7 +18,7 @@ fn greet(name: &str) -> String {
 async fn encode(base_file: &str, secret_file: &str, encoded_file: &str) -> Result<(), Error> {
     println!("Encoding request received!");
 
-    let mut encoder = Encoder::new(base_file.into(), secret_file.into(), encoded_file.into())?;
+    let mut encoder = Encoder::new(base_file, secret_file, encoded_file)?;
     encoder.encode()
 }
 
@@ -27,7 +27,7 @@ async fn encode(base_file: &str, secret_file: &str, encoded_file: &str) -> Resul
 async fn decode(encoded_file: &str, output_file: &str) -> Result<(), Error> {
     println!("Decoding request received!");
 
-    let mut decoder = Decoder::new(encoded_file.into(), output_file.into())?;
+    let mut decoder = Decoder::new(encoded_file, output_file)?;
     decoder.decode()
 }
 

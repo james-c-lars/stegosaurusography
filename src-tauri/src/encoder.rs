@@ -4,7 +4,7 @@ use std::{
 };
 
 use crate::{
-    error::{DuplicateEnum, Error},
+    error::{Error, WhichDuplicates},
     file_types::base_file::BaseFile,
 };
 
@@ -18,10 +18,14 @@ pub struct Encoder {
 impl Encoder {
     /// Constructs a new Encoder.
     pub fn new(
-        base_file_path: PathBuf,
-        secret_file_path: PathBuf,
-        output_file_path: PathBuf,
+        base_file_path: impl Into<PathBuf>,
+        secret_file_path: impl Into<PathBuf>,
+        output_file_path: impl Into<PathBuf>,
     ) -> Result<Encoder, Error> {
+        let base_file_path = base_file_path.into();
+        let secret_file_path = secret_file_path.into();
+        let output_file_path = output_file_path.into();
+
         let base_file = BaseFile::open(base_file_path.clone())?;
         let secret_file = File::open(secret_file_path.clone())?;
         let output_file = File::create(output_file_path.clone())?;
@@ -47,14 +51,14 @@ impl Encoder {
 
         if canonicalized_base == canonicalized_secret {
             if canonicalized_secret == canonicalized_output {
-                Err(Error::DuplicateFiles(DuplicateEnum::All))
+                Err(Error::DuplicateFiles(WhichDuplicates::All))
             } else {
-                Err(Error::DuplicateFiles(DuplicateEnum::BaseAndSecret))
+                Err(Error::DuplicateFiles(WhichDuplicates::BaseAndSecret))
             }
         } else if canonicalized_base == canonicalized_output {
-            Err(Error::DuplicateFiles(DuplicateEnum::BaseAndOutput))
+            Err(Error::DuplicateFiles(WhichDuplicates::BaseAndOutput))
         } else if canonicalized_secret == canonicalized_output {
-            Err(Error::DuplicateFiles(DuplicateEnum::SecretAndOutput))
+            Err(Error::DuplicateFiles(WhichDuplicates::SecretAndOutput))
         } else {
             Ok(())
         }

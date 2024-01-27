@@ -5,7 +5,7 @@ use serde::Serialize;
 use crate::{
     error::Error,
     file_types::{
-        png,
+        image,
         supported_file::{SupportedFile, SupportedFileType},
     },
 };
@@ -33,7 +33,7 @@ impl BaseFile {
     /// Returns the number of bytes available to encode a file.
     pub fn available_space(&self) -> Result<u64, Error> {
         match self.file.file_type() {
-            SupportedFileType::Png => png::available_size_of(&self.file),
+            SupportedFileType::Image => image::available_size_of(&self.file),
         }
     }
 
@@ -58,7 +58,7 @@ impl BaseFile {
         }
 
         match self.file.file_type() {
-            SupportedFileType::Png => png::encode(&self.file, secret_file, output_file),
+            SupportedFileType::Image => image::encode(&self.file, secret_file, output_file),
         }
     }
 }

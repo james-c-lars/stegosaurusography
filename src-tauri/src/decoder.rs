@@ -4,7 +4,7 @@ use std::{
 };
 
 use crate::{
-    error::{DuplicateEnum, Error},
+    error::{Error, WhichDuplicates},
     file_types::encoded_file::EncodedFile,
 };
 
@@ -16,7 +16,13 @@ pub struct Decoder {
 
 impl Decoder {
     /// Constructs a new Decoder.
-    pub fn new(encoded_file_path: PathBuf, output_file_path: PathBuf) -> Result<Decoder, Error> {
+    pub fn new(
+        encoded_file_path: impl Into<PathBuf>,
+        output_file_path: impl Into<PathBuf>,
+    ) -> Result<Decoder, Error> {
+        let encoded_file_path = encoded_file_path.into();
+        let output_file_path = output_file_path.into();
+
         let encoded_file = EncodedFile::open(encoded_file_path.clone())?;
         let output_file = File::create(output_file_path.clone())?;
 
@@ -37,7 +43,7 @@ impl Decoder {
         let canonicalized_output = canonicalize(output_file_path)?;
 
         if canonicalized_encoded == canonicalized_output {
-            Err(Error::DuplicateFiles(DuplicateEnum::All))
+            Err(Error::DuplicateFiles(WhichDuplicates::All))
         } else {
             Ok(())
         }

@@ -3,7 +3,7 @@ use std::{fs::File, path::PathBuf};
 use crate::{
     error::Error,
     file_types::{
-        png,
+        image,
         supported_file::{SupportedFile, SupportedFileType},
     },
 };
@@ -24,7 +24,7 @@ impl EncodedFile {
     /// Decodes the secret file inside of this one to the output file.
     pub fn decode_to(&self, output_file: &mut File) -> Result<(), Error> {
         match self.file.file_type() {
-            SupportedFileType::Png => png::decode(&self.file, output_file),
+            SupportedFileType::Image => image::decode(&self.file, output_file),
         }
     }
 }
