@@ -114,7 +114,7 @@ mod tests {
     #[test]
     fn can_decode() -> crate::Result<()> {
         let output_file_path = test_data_dir().join("decoded_story.result.txt");
-        let encoded_file = SupportedFile::open("./test_data/stick_with_secret.png")?;
+        let encoded_file = SupportedFile::open(encoded_file())?;
         let mut output_file = File::create(&output_file_path)?;
         decode(&encoded_file, &mut output_file)?;
 
