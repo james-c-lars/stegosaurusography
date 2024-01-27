@@ -8,6 +8,8 @@ mod encode;
 pub use decode::decode;
 pub use encode::encode;
 
+use super::supported_file::SupportedFile;
+
 /// The number of channels in a pixel that aren't an alpha channel.
 const NON_ALPHA_CHANNELS: u8 = <DynamicImage as GenericImageView>::Pixel::CHANNEL_COUNT - 1;
 
@@ -20,8 +22,8 @@ const BITS_PER_PIXEL: u64 = NON_ALPHA_CHANNELS as u64 * 2;
 const TWO_BIT_MASK: u8 = 0b00000011;
 
 /// Finds the amount of space in bytes, that can be used to store a secret file.
-pub fn available_size_of(file: &File) -> Result<u64, Error> {
-    let reader = Reader::new(BufReader::new(file)).with_guessed_format()?;
+pub fn available_size_of(file: &SupportedFile) -> Result<u64, Error> {
+    let reader = reader_from_supported_file(file);
     let dimensions = reader.into_dimensions()?;
 
     let num_pixels = dimensions.0 as u64 * dimensions.1 as u64;
@@ -38,32 +40,51 @@ fn coord_iter(dimensions: (u32, u32)) -> impl Iterator<Item = (u32, u32, u8)> {
     })
 }
 
+/// Converts a SupportedFile into an ImageReader.
+fn reader_from_supported_file(file: &SupportedFile) -> Reader<BufReader<&File>> {
+    Reader::with_format(
+        BufReader::new(file as &File),
+        file.image_type().expect(&format!(
+            "We don't call image functions on a non-image. Actual file_type={:?}",
+            file.file_type()
+        )),
+    )
+}
+
 #[cfg(test)]
 mod tests {
-    use std::{fs::File, io::Read, path::Path};
+    use std::{
+        fs::File,
+        io::Read,
+        path::{Path, PathBuf},
+    };
 
     use crate::{
-        file_types::image::{available_size_of, decode, encode},
+        file_types::{
+            image::{available_size_of, decode, encode},
+            supported_file::SupportedFile,
+        },
         HEADER_BYTES,
     };
 
     #[test]
     fn size_of() {
         let path = Path::new("./test_data/stick.png");
-        let file = File::open(path).unwrap();
+        let file = SupportedFile::open(path).unwrap();
 
         assert_eq!(available_size_of(&file).unwrap(), 98_304 - HEADER_BYTES);
     }
 
     #[test]
     fn can_encode_and_decode() {
-        let base_image = File::open("./test_data/stick.png").unwrap();
+        let base_image = SupportedFile::open(&PathBuf::from("./test_data/stick.png")).unwrap();
         let secret_file = File::open("./test_data/story.txt").unwrap();
         let mut output_image = File::create("./test_data/stick_with_secret.png").unwrap();
         encode(&base_image, &secret_file, &mut output_image).unwrap();
         drop(output_image);
 
-        let encoded_file = File::open("./test_data/stick_with_secret.png").unwrap();
+        let encoded_file =
+            SupportedFile::open(&PathBuf::from("./test_data/stick_with_secret.png")).unwrap();
         let mut output_file = File::create("./test_data/decoded_story.txt").unwrap();
         decode(&encoded_file, &mut output_file).unwrap();
         drop(output_file);

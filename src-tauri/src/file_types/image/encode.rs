@@ -1,4 +1,4 @@
-use image::{io::Reader, GenericImage, GenericImageView, Pixel, Rgba};
+use image::{GenericImage, GenericImageView, Pixel, Rgba};
 use std::{
     fs::File,
     io::{BufReader, BufWriter, Error as IOError, Read},
@@ -6,15 +6,24 @@ use std::{
 
 use crate::{
     error::Error,
-    file_types::image::{coord_iter, TWO_BIT_MASK},
+    file_types::{
+        image::{coord_iter, reader_from_supported_file, TWO_BIT_MASK},
+        supported_file::SupportedFile,
+    },
 };
 
 /// Encodes the hidden file into the base image, and writes the results to the output image.
-pub fn encode(base_image: &File, secret_file: &File, output_image: &mut File) -> Result<(), Error> {
+pub fn encode(
+    base_image: &SupportedFile,
+    secret_file: &File,
+    output_image: &mut File,
+) -> Result<(), Error> {
     // Getting the image we're going to encode with the secret
-    let reader = Reader::new(BufReader::new(base_image)).with_guessed_format()?;
+    log::trace!("Parsing the base image");
+    let reader = reader_from_supported_file(base_image);
     let format = reader.format().expect("We just guessed the format");
     let mut image = reader.decode()?; // image is mut since we'll be editing it in place
+    log::trace!("Parsed image: {image:?}");
 
     // Getting the data from the secret file. Reading it 2 bits at a time, as that's how much we can store in a pixel
     let secret_data = two_bit_iterator(secret_file)?;

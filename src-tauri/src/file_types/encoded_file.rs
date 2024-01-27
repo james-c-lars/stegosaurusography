@@ -1,4 +1,4 @@
-use std::{fs::File, path::PathBuf};
+use std::{fs::File, path::Path};
 
 use crate::{
     error::Error,
@@ -15,7 +15,7 @@ pub struct EncodedFile {
 
 impl EncodedFile {
     /// Opens a file that has another secret file encoded in it.
-    pub fn open(file_path: PathBuf) -> Result<EncodedFile, Error> {
+    pub fn open(file_path: &Path) -> Result<EncodedFile, Error> {
         Ok(EncodedFile {
             file: SupportedFile::open(file_path)?,
         })
@@ -23,8 +23,9 @@ impl EncodedFile {
 
     /// Decodes the secret file inside of this one to the output file.
     pub fn decode_to(&self, output_file: &mut File) -> Result<(), Error> {
+        log::trace!("Beginning the decoding process");
         match self.file.file_type() {
-            SupportedFileType::Image => image::decode(&self.file, output_file),
+            SupportedFileType::Png => image::decode(&self.file, output_file),
         }
     }
 }

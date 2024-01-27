@@ -1,20 +1,25 @@
 use std::{
     fs::File,
-    io::{BufReader, BufWriter, Write},
+    io::{BufWriter, Write},
 };
 
-use image::{io::Reader, DynamicImage, GenericImageView, Pixel};
+use image::{DynamicImage, GenericImageView, Pixel};
 use itertools::Itertools;
 
 use crate::{
-    file_types::image::{coord_iter, TWO_BIT_MASK},
+    file_types::{
+        image::{coord_iter, TWO_BIT_MASK},
+        supported_file::SupportedFile,
+    },
     CorruptionType, Error, HEADER_BYTES,
 };
 
+use super::reader_from_supported_file;
+
 /// Decodes the encoded image, and writes the results to the output file.
-pub fn decode(encoded_image: &File, output_file: &mut File) -> Result<(), Error> {
+pub fn decode(encoded_image: &SupportedFile, output_file: &mut File) -> Result<(), Error> {
     // Getting the image that contains the secret
-    let reader = Reader::new(BufReader::new(encoded_image)).with_guessed_format()?;
+    let reader = reader_from_supported_file(encoded_image);
     let image = reader.decode()?;
 
     // Starting by reading the header to find the original file size

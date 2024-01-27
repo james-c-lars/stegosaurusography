@@ -1,4 +1,4 @@
-use std::{io::Error as IOError, path::PathBuf};
+use std::{io::Error as IOError, path::Path};
 
 use image::ImageError;
 use serde::Serialize;
@@ -8,7 +8,7 @@ use serde::Serialize;
 #[serde(tag = "type")]
 pub enum Error {
     IOError(String),
-    UnsupportedFileType(PathBuf),
+    UnsupportedFileType(Box<Path>),
     BaseFileNotBigEnough {
         available_size: u64,
         secret_file_size: u64,

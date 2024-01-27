@@ -1,6 +1,6 @@
 use std::{
     fs::{canonicalize, File},
-    path::PathBuf,
+    path::{Path, PathBuf},
 };
 
 use crate::{
@@ -26,11 +26,13 @@ impl Encoder {
         let secret_file_path = secret_file_path.into();
         let output_file_path = output_file_path.into();
 
-        let base_file = BaseFile::open(base_file_path.clone())?;
-        let secret_file = File::open(secret_file_path.clone())?;
-        let output_file = File::create(output_file_path.clone())?;
+        log::trace!("Opening files");
+        let base_file = BaseFile::open(&base_file_path)?;
+        let secret_file = File::open(&secret_file_path)?;
+        let output_file = File::create(&output_file_path)?;
 
-        Encoder::check_for_duplicate_files(base_file_path, secret_file_path, output_file_path)?;
+        log::trace!("Checking for duplicates");
+        Encoder::check_for_duplicate_files(&base_file_path, &secret_file_path, &output_file_path)?;
 
         Ok(Encoder {
             base_file,
@@ -41,9 +43,9 @@ impl Encoder {
 
     /// Checks to see if any of the given files are the same.
     fn check_for_duplicate_files(
-        base_file_path: PathBuf,
-        secret_file_path: PathBuf,
-        output_file_path: PathBuf,
+        base_file_path: &Path,
+        secret_file_path: &Path,
+        output_file_path: &Path,
     ) -> Result<(), Error> {
         let canonicalized_base = canonicalize(base_file_path)?;
         let canonicalized_secret = canonicalize(secret_file_path)?;
