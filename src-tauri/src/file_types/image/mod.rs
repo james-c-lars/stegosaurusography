@@ -58,6 +58,7 @@ fn reader_from_supported_file(file: &SupportedFile) -> Reader<BufReader<&File>> 
 #[cfg(test)]
 mod tests {
     use std::{fs::File, io::Read, path::Path};
+    use std::path::PathBuf;
 
     use crate::{
         file_types::{
@@ -67,48 +68,10 @@ mod tests {
         HEADER_BYTES,
     };
 
-    #[test]
-    fn size_of() -> crate::Result<()> {
-        let file = SupportedFile::open("./test_data/stick.png")?;
-
-        assert_eq!(available_size_of(&file).unwrap(), 98_304 - HEADER_BYTES);
-
-        Ok(())
-    }
-
-    #[test]
-    fn can_encode_and_decode() -> crate::Result<()> {
-        can_encode(
-            "./test_data/stick.png",
-            "./test_data/story.txt",
-            "./test_data/stick_with_secret.png",
-        )?;
-        can_decode(
-            "./test_data/stick_with_secret.png",
-            "./test_data/decoded_story.txt",
-        )?;
-
-        assert_files_equal("./test_data/story.txt", "./test_data/decoded_story.txt")?;
-
-        Ok(())
-    }
-
-    fn can_encode<P: AsRef<Path>>(base_image: P, secret: P, output_image: P) -> crate::Result<()> {
-        let base_image = SupportedFile::open(base_image)?;
-        let secret_file = File::open(secret)?;
-        let mut output_image = File::create(output_image)?;
-        encode(&base_image, &secret_file, &mut output_image)?;
-
-        Ok(())
-    }
-
-    fn can_decode<P: AsRef<Path>>(encoded_file: P, output_file: P) -> crate::Result<()> {
-        let encoded_file = SupportedFile::open(encoded_file)?;
-        let mut output_file = File::create(output_file)?;
-        decode(&encoded_file, &mut output_file)?;
-
-        Ok(())
-    }
+    fn test_data_dir() -> PathBuf { "./test_data".into() }
+    fn base_file() -> PathBuf { test_data_dir().join("stick.png") }
+    fn encoded_file() -> PathBuf { test_data_dir().join("stick_with_secret.png") }
+    fn secret_file() -> PathBuf { test_data_dir().join("story.txt") }
 
     fn assert_files_equal<P: AsRef<Path>>(file1: P, file2: P) -> crate::Result<()> {
         let file1 = file_contents(file1)?;
@@ -124,5 +87,39 @@ mod tests {
         File::open(file)?.read_to_end(&mut file_contents)?;
 
         Ok(file_contents)
+    }
+
+    #[test]
+    fn size_of() -> crate::Result<()> {
+        let file = SupportedFile::open(base_file())?;
+
+        assert_eq!(available_size_of(&file).unwrap(), 98_304 - HEADER_BYTES);
+
+        Ok(())
+    }
+
+    #[test]
+    fn can_encode() -> crate::Result<()> {
+        let output_image_path = test_data_dir().join("stick_encode.result.png");
+        let base_image = SupportedFile::open(base_file())?;
+        let secret_file = File::open(secret_file())?;
+        let mut output_image = File::create(&output_image_path)?;
+        encode(&base_image, &secret_file, &mut output_image)?;
+
+        assert_files_equal(output_image_path, encoded_file())?;
+
+        Ok(())
+    }
+
+    #[test]
+    fn can_decode() -> crate::Result<()> {
+        let output_file_path = test_data_dir().join("decoded_story.result.txt");
+        let encoded_file = SupportedFile::open("./test_data/stick_with_secret.png")?;
+        let mut output_file = File::create(&output_file_path)?;
+        decode(&encoded_file, &mut output_file)?;
+
+        assert_files_equal(output_file_path, secret_file())?;
+
+        Ok(())
     }
 }
