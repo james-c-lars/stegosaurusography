@@ -5,6 +5,7 @@ use crate::{Error, HEADER_BYTES};
 
 mod decode;
 mod encode;
+
 pub use decode::decode;
 pub use encode::encode;
 
@@ -13,9 +14,9 @@ use super::supported_file::SupportedFile;
 /// The number of channels in a pixel that aren't an alpha channel.
 const NON_ALPHA_CHANNELS: u8 = <DynamicImage as GenericImageView>::Pixel::CHANNEL_COUNT - 1;
 
-/// The number of bits of data we can store per pixel in an image.
+/// The number of bits we can store per pixel in an image.
 ///
-/// Every channel except for the alpha channel provides 2 bits.
+/// Every channel except for the alpha channel provides two bits.
 const BITS_PER_PIXEL: u64 = NON_ALPHA_CHANNELS as u64 * 2;
 
 /// Mask for the last two bits of a byte.
@@ -33,7 +34,7 @@ pub fn available_size_of(file: &SupportedFile) -> Result<u64, Error> {
 /// Iterates over the coordinates in an image in a deterministic order.
 ///
 /// The first two u32 values are the x and y coordinate. The last value is which channel is next.
-fn coord_iter(dimensions: (u32, u32)) -> impl Iterator<Item = (u32, u32, u8)> {
+fn coord_iter(dimensions: (u32, u32)) -> impl Iterator<Item=(u32, u32, u8)> {
     let (width, height) = dimensions;
     (0..width).flat_map(move |x| {
         (0..height).flat_map(move |y| (0..NON_ALPHA_CHANNELS).map(move |c| (x, y, c)))
@@ -44,10 +45,7 @@ fn coord_iter(dimensions: (u32, u32)) -> impl Iterator<Item = (u32, u32, u8)> {
 fn reader_from_supported_file(file: &SupportedFile) -> Reader<BufReader<&File>> {
     Reader::with_format(
         BufReader::new(file as &File),
-        file.image_type().expect(&format!(
-            "We don't call image functions on a non-image. Actual file_type={:?}",
-            file.file_type()
-        )),
+        file.image_type().unwrap_or_else(|| panic!("We don't call image functions on a non-image. Actual file_type={:?}", file.file_type())),
     )
 }
 

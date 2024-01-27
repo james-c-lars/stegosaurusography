@@ -1,7 +1,4 @@
-use std::{
-    fs::File,
-    io::{BufWriter, Write},
-};
+use std::{fs::File, io::{BufWriter, Write}};
 
 use image::{DynamicImage, GenericImageView, Pixel};
 use itertools::Itertools;
@@ -31,14 +28,13 @@ pub fn decode(encoded_image: &SupportedFile, output_file: &mut File) -> Result<(
             None => return Err(Error::CorruptedFile(CorruptionType::FileTooSmallForHeader)),
         }
     }
-    let file_size = u64::from_be_bytes(header_bytes);
+    let file_size = usize::from_be_bytes(header_bytes);
 
     // Writing out the secret data to the output file
     let mut writer = BufWriter::new(output_file);
     let mut bytes_written = 0;
-    for byte in secret_data.take(file_size as usize) {
-        writer.write(&[byte])?;
-        bytes_written += 1;
+    for byte in secret_data.take(file_size) {
+        bytes_written += writer.write(&[byte])?;
     }
 
     // Verifying that we were able to read the entire file according to the header

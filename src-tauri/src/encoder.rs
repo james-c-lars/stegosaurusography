@@ -8,7 +8,7 @@ use crate::{
     file_types::base_file::BaseFile,
 };
 
-/// Handles the steganographic process of encoding a hidden file inside of a base file.
+/// Handles the steganographic process of encoding a hidden file inside a base file.
 pub struct Encoder {
     base_file: BaseFile,
     secret_file: File,

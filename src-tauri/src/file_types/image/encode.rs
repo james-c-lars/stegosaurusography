@@ -49,7 +49,7 @@ pub fn encode(
     Ok(())
 }
 
-/// Reads in a file 2 bits at a time. Will proceed the contents of the file with a u64 representation of the size of the file.
+/// Reads in a file 2 bits at a time. Will proceed the contents of the file with a u64 representation of the file size.
 ///
 /// Returns an IO Error if it isn't able to read the size of a file from the metadata.
 fn two_bit_iterator(
@@ -60,13 +60,13 @@ fn two_bit_iterator(
         .len()
         .to_be_bytes()
         .into_iter()
-        .map(|byte| Ok(byte));
+        .map(Ok);
 
     Ok(header_bytes
         .chain(BufReader::new(secret_file).bytes())
         .flat_map(|maybe_byte| {
             // bytes returns a Result as reading can fail at any time
-            // If it does, we'll propogate the error
+            // If it does, we'll propagate the error
             match maybe_byte {
                 Ok(byte) => vec![
                     Ok(byte >> 6 & TWO_BIT_MASK),

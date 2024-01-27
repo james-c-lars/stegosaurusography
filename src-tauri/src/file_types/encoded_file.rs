@@ -21,7 +21,7 @@ impl EncodedFile {
         })
     }
 
-    /// Decodes the secret file inside of this one to the output file.
+    /// Decodes the secret file inside this one to the output file.
     pub fn decode_to(&self, output_file: &mut File) -> Result<(), Error> {
         log::trace!("Beginning the decoding process");
         match self.file.file_type() {

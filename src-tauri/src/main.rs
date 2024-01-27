@@ -69,7 +69,7 @@ mod requests {
 
         File::open(file)
             .and_then(|file| file.metadata())
-            .and_then(|metadata| Ok(metadata.len()))
+            .map(|metadata| metadata.len())
             .map_err(|err| {
                 log::error!("{err:?}");
                 err.into()

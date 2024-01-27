@@ -13,7 +13,7 @@ use crate::{
     },
 };
 
-/// A collection of properties of the base file.
+/// A collection of properties about the base file.
 #[derive(Serialize)]
 pub struct FileProperties {
     pub available_space: u64,
