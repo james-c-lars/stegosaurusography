@@ -14,8 +14,9 @@
     -webkit-text-size-adjust: 100%;
 }
 
-body {
-    flex: auto;
+html, body, #app {
+    height: 100%;
+    margin: 0;
 }
 
 @media (prefers-color-scheme: dark) {
