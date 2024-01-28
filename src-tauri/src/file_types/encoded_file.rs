@@ -15,7 +15,7 @@ pub struct EncodedFile {
 
 impl EncodedFile {
     /// Opens a file that has another secret file encoded in it.
-    pub fn open(file_path: &Path) -> Result<EncodedFile, Error> {
+    pub fn open(file_path: impl AsRef<Path>) -> Result<EncodedFile, Error> {
         Ok(EncodedFile {
             file: SupportedFile::open(file_path)?,
         })

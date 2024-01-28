@@ -1,6 +1,6 @@
 use std::{
     fs::File,
-    path::{Path, PathBuf},
+    path::Path,
 };
 
 use serde::Serialize;
@@ -27,7 +27,7 @@ pub struct BaseFile {
 
 impl BaseFile {
     /// Opens a file that will be used as the base of an encoded file.
-    pub fn open(file_path: &Path) -> Result<BaseFile, Error> {
+    pub fn open(file_path: impl AsRef<Path>) -> Result<BaseFile, Error> {
         Ok(BaseFile {
             file: SupportedFile::open(file_path)?,
         })
@@ -69,7 +69,6 @@ impl BaseFile {
 }
 
 /// Gets the properties of a file including its type and how much space is available.
-pub fn get_properties(base_file_path: impl Into<PathBuf>) -> Result<FileProperties, Error> {
-    let base_file_path = base_file_path.into();
-    BaseFile::open(&base_file_path)?.get_properties()
+pub fn get_properties(base_file_path: impl AsRef<Path>) -> Result<FileProperties, Error> {
+    BaseFile::open(base_file_path)?.get_properties()
 }

@@ -1,6 +1,6 @@
 use std::{
     fs::{canonicalize, File},
-    path::{Path, PathBuf},
+    path::Path,
 };
 
 use crate::{
@@ -17,12 +17,9 @@ pub struct Decoder {
 impl Decoder {
     /// Constructs a new Decoder.
     pub fn new(
-        encoded_file_path: impl Into<PathBuf>,
-        output_file_path: impl Into<PathBuf>,
+        encoded_file_path: impl AsRef<Path>,
+        output_file_path: impl AsRef<Path>,
     ) -> Result<Decoder, Error> {
-        let encoded_file_path = encoded_file_path.into();
-        let output_file_path = output_file_path.into();
-
         log::trace!("Opening files");
         let encoded_file = EncodedFile::open(&encoded_file_path)?;
         let output_file = File::create(&output_file_path)?;
@@ -38,8 +35,8 @@ impl Decoder {
 
     /// Checks to see if any of the given files are the same.
     fn check_for_duplicate_files(
-        encoded_file_path: &Path,
-        output_file_path: &Path,
+        encoded_file_path: impl AsRef<Path>,
+        output_file_path: impl AsRef<Path>,
     ) -> crate::Result<()> {
         let canonicalized_encoded = canonicalize(encoded_file_path)?;
         let canonicalized_output = canonicalize(output_file_path)?;
