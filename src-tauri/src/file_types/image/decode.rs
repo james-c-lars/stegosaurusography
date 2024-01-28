@@ -31,7 +31,7 @@ pub fn decode(encoded_image: &SupportedFile, output_file: &mut File) -> crate::R
             None => return Err(Error::CorruptedFile(CorruptionType::FileTooSmallForHeader)),
         }
     }
-    let file_size = usize::from_be_bytes(header_bytes);
+    let file_size = u64::from_be_bytes(header_bytes) as usize;
 
     // Writing out the secret data to the output file
     let mut writer = BufWriter::new(output_file);
