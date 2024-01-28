@@ -1,6 +1,5 @@
 <script lang="ts">
     import FileOpenInput from "../shared/FileOpenInput.svelte";
-    import FileSaveInput from "../shared/FileSaveInput.svelte";
     import { invoke } from "@tauri-apps/api";
 
     let baseFile: string | undefined = undefined;
@@ -14,35 +13,51 @@
             outputFile: encodedFile,
         });
     }
-
-    function fileExtension(fileName: string): string {
-        return fileName.split(".").pop() ?? "";
-    }
 </script>
 
 <div class="encoder-view">
-    <FileOpenInput bind:selectedFile={baseFile} dialogTitle="Select Base File" />
-    <p>Base File: {baseFile}</p>
+    <div class="encoder-options">
+        <div class="encoder-option">
+            <p>Base File: {baseFile}</p>
+            <FileOpenInput bind:selectedFile={baseFile} dialogTitle="Select Base File" />
+        </div>
 
-    <FileOpenInput bind:selectedFile={secretFile} dialogTitle="Select Secret File" />
-    <p>Secret File: {secretFile}</p>
+        <div class="encoder-option">
+            <p>Secret File: {secretFile}</p>
+            <FileOpenInput bind:selectedFile={secretFile} dialogTitle="Select Secret File" />
+        </div>
+    </div>
 
-    {#if baseFile}
-        <FileSaveInput
-            bind:selectedFile={encodedFile}
-            dialogTitle="Save Encoded File"
-            inputFileExtensions={[fileExtension(baseFile)]}
-        />
-        <p>Encoded File: {encodedFile}</p>
-    {/if}
-
-    {#if baseFile && secretFile && encodedFile}
-        <button on:click={encode}>ENCODE!</button>
-    {/if}
+    <div class="encoder-action">
+        <button class="encode-button" on:click={encode} disabled={!(baseFile || secretFile)}>ENCODE!</button>
+    </div>
 </div>
 
 <style>
     .encoder-view {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
         background: #2f2f2f;
+    }
+
+    .encoder-options {
+        display: flex;
+        flex-grow: 1;
+    }
+
+    .encoder-option {
+        display: flex;
+        flex-grow: 1;
+        flex-direction: column;
+    }
+
+    .encoder-action {
+        display: flex;
+    }
+
+    .encode-button {
+        flex-grow: 1;
     }
 </style>
