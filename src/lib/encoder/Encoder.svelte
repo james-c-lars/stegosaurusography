@@ -29,7 +29,7 @@
     </div>
 
     <div class="encoder-action">
-        <button class="encode-button" on:click={encode} disabled={!(baseFile || secretFile)}>ENCODE!</button>
+        <button class="encode-button" on:click={encode} disabled={!(baseFile && secretFile)}>ENCODE!</button>
     </div>
 </div>
 
