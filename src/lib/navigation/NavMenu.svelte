@@ -1,7 +1,7 @@
 <nav class="nav-menu">
-    <button class="nav-button">Encode</button>
-    <button class="nav-button">Decode</button>
-    <button class="nav-button">About</button>
+    <a href="/encoder" class="nav-button">Encode</a>
+    <a href="/decoder" class="nav-button">Decode</a>
+    <a href="/about" class="nav-button">About</a>
 </nav>
 
 <style>

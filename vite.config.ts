@@ -1,16 +1,17 @@
 // noinspection JSUnusedGlobalSymbols,JSUnusedLocalSymbols
 
 import { defineConfig } from "vite";
-import { svelte } from "@sveltejs/vite-plugin-svelte";
+// @ts-expect-error There are no types for this, and IDE has a fit, but this is fine.
+import { sveltekit } from "@sveltejs/kit/vite";
 import sveltePreprocess from "svelte-preprocess";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const mobile = process.env.TAURI_PLATFORM === "android" || process.env.TAURI_PLATFORM === "ios";
+// const mobile = process.env.TAURI_PLATFORM === "android" || process.env.TAURI_PLATFORM === "ios";
 
 // https://vitejs.dev/config/
-export default defineConfig(async () => ({
+export default defineConfig({
     plugins: [
-        svelte({
+        sveltekit({
             preprocess: [
                 sveltePreprocess({
                     typescript: true,
@@ -38,4 +39,4 @@ export default defineConfig(async () => ({
         // produce sourcemaps for debug builds
         sourcemap: !!process.env.TAURI_DEBUG,
     },
-}));
+});

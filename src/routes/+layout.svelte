@@ -1,13 +1,12 @@
-<script lang="ts">
-    import Encoder from "./lib/encoder/Encoder.svelte";
-    import NavMenu from "./lib/navigation/NavMenu.svelte";
+<script>
+    import NavMenu from "../lib/navigation/NavMenu.svelte";
+    import "./styles.css";
 </script>
 
 <main class="app-view">
     <div class="nav-view">
         <NavMenu />
     </div>
-
     <div class="main-view">
         <div class="app-bar">
             <button>Menu</button>
@@ -16,7 +15,7 @@
         </div>
 
         <div class="tool-view">
-            <Encoder />
+            <slot />
         </div>
     </div>
 </main>
