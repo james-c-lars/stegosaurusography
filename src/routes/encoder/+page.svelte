@@ -1,5 +1,5 @@
 <script lang="ts">
-    import FileOpenInput from "../shared/FileOpenInput.svelte";
+    import FileOpenInput from "../../lib/files/FileOpenInput.svelte";
     import { invoke } from "@tauri-apps/api";
 
     let baseFile: string | undefined = undefined;
