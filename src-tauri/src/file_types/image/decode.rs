@@ -7,12 +7,12 @@ use image::{DynamicImage, GenericImageView, Pixel};
 use itertools::Itertools;
 
 use crate::{
-    error::{encoded_context, output_context},
+    encoded_context,
     file_types::{
         image::{coord_iter, reader_from_supported_file, TWO_BIT_MASK},
         supported_file::SupportedFile,
     },
-    CorruptionType, ErrorType, Result, HEADER_BYTES,
+    output_context, CorruptionType, ErrorType, Result, HEADER_BYTES,
 };
 
 /// Decodes the encoded image, and writes the results to the output file.

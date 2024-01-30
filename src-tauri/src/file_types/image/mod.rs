@@ -63,12 +63,12 @@ mod tests {
     };
 
     use crate::{
-        error::{base_context, encoded_context, output_context, secret_context},
+        base_context, encoded_context,
         file_types::{
             image::{available_size_of, decode, encode},
             supported_file::SupportedFile,
         },
-        ErrorType, Result, HEADER_BYTES,
+        output_context, secret_context, ErrorType, Result, HEADER_BYTES,
     };
 
     fn test_data_dir() -> PathBuf {

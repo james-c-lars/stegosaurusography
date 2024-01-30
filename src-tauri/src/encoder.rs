@@ -4,8 +4,7 @@ use std::{
 };
 
 use crate::{
-    error::{base_context, output_context, secret_context, with_contexts},
-    file_types::base_file::BaseFile,
+    base_context, file_types::base_file::BaseFile, output_context, secret_context, with_contexts,
     ErrorType, Result, WhichDuplicates,
 };
 

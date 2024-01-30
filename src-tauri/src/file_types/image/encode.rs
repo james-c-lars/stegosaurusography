@@ -6,12 +6,12 @@ use std::{
 use image::{GenericImage, GenericImageView, Pixel, Rgba};
 
 use crate::{
-    error::{base_context, output_context, secret_context},
+    base_context,
     file_types::{
         image::{coord_iter, reader_from_supported_file, TWO_BIT_MASK},
         supported_file::SupportedFile,
     },
-    Result,
+    output_context, secret_context, Result,
 };
 
 /// Encodes the hidden file into the base image, and writes the results to the output image.

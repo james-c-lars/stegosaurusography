@@ -3,12 +3,12 @@ use std::{fs::File, path::Path};
 use serde::Serialize;
 
 use crate::{
-    error::{base_context, secret_context},
+    base_context,
     file_types::{
         image,
         supported_file::{SupportedFile, SupportedFileType},
     },
-    ErrorType, Result,
+    secret_context, ErrorType, Result,
 };
 
 /// A collection of properties about the base file.

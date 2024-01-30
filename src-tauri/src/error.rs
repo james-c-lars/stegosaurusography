@@ -46,54 +46,54 @@ pub enum ErrorContext {
 }
 
 /// Used to both add a context to an ErrorType, but also log the error inline using the log crate.
+#[macro_export]
 macro_rules! with_contexts {
     ($result:expr, $($context:expr),+) => {
         $result.map_err(|err| {
-            let error_type = crate::error::ErrorType::from(err);
+            let error_type = $crate::ErrorType::from(err);
             let contexts = vec![$($context,)+];
 
             log::error!("Context {contexts:?} - {error_type:?}");
 
-            crate::Error {
+            $crate::Error {
                 contexts,
                 error_type,
             }
         })
     };
 }
-pub(crate) use with_contexts;
 
 /// Gives a BaseFile context to an error.
+#[macro_export]
 macro_rules! base_context {
     ($result:expr) => {
-        crate::error::with_contexts!($result, crate::error::ErrorContext::BaseFile)
+        $crate::with_contexts!($result, $crate::ErrorContext::BaseFile)
     };
 }
-pub(crate) use base_context;
 
 /// Gives a SecretFile context to an error.
+#[macro_export]
 macro_rules! secret_context {
     ($result:expr) => {
-        crate::error::with_contexts!($result, crate::error::ErrorContext::SecretFile)
+        $crate::with_contexts!($result, $crate::ErrorContext::SecretFile)
     };
 }
-pub(crate) use secret_context;
 
 /// Gives an OutputFile context to an error.
+#[macro_export]
 macro_rules! output_context {
     ($result:expr) => {
-        crate::error::with_contexts!($result, crate::error::ErrorContext::OutputFile)
+        $crate::with_contexts!($result, $crate::ErrorContext::OutputFile)
     };
 }
-pub(crate) use output_context;
 
 /// Gives an EncodedFile context to an error.
+#[macro_export]
 macro_rules! encoded_context {
     ($result:expr) => {
-        crate::error::with_contexts!($result, crate::error::ErrorContext::EncodedFile)
+        $crate::with_contexts!($result, $crate::ErrorContext::EncodedFile)
     };
 }
-pub(crate) use encoded_context;
 
 /// Different types of errors associated with Encoding and Decoding files.
 #[derive(Debug, Serialize)]

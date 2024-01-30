@@ -4,7 +4,7 @@
 mod requests {
     use std::fs::File;
     use stegosaurusography::{
-        get_properties, Decoder, Encoder, Error, ErrorContext, FileProperties, Result,
+        get_properties, secret_context, Decoder, Encoder, FileProperties, Result,
     };
 
     /// Used to do the encoding of the secret file into the base file. The results will be
@@ -52,21 +52,11 @@ mod requests {
         log::info!("File size request received!");
         log::trace!("File Size Request > file={file}");
 
-        File::open(file)
-            .and_then(|file| file.metadata())
-            .map(|metadata| {
-                let len = metadata.len();
-                log::info!("File size is {len}");
-                len
-            })
-            .map_err(|error| {
-                let error = Error {
-                    contexts: vec![ErrorContext::SecretFile],
-                    error_type: error.into(),
-                };
-                log::error!("{error:?}");
-                error
-            })
+        secret_context!(File::open(file).and_then(|file| file.metadata())).map(|metadata| {
+            let file_size = metadata.len();
+            log::info!("File size is {file_size}");
+            file_size
+        })
     }
 }
 

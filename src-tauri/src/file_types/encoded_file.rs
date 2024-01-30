@@ -1,7 +1,7 @@
 use std::{fs::File, path::Path};
 
 use crate::{
-    error::encoded_context,
+    encoded_context,
     file_types::{
         image,
         supported_file::{SupportedFile, SupportedFileType},
