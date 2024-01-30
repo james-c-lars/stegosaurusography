@@ -55,26 +55,26 @@ impl Encoder {
                     Err(ErrorType::DuplicateFiles(WhichDuplicates::All)),
                     BaseFile,
                     SecretFile,
-                    OutputFile
+                    OutputFile,
                 )
             } else {
                 with_contexts!(
                     Err(ErrorType::DuplicateFiles(WhichDuplicates::BaseAndSecret)),
                     BaseFile,
-                    SecretFile
+                    SecretFile,
                 )
             }
         } else if canonicalized_base == canonicalized_output {
             with_contexts!(
                 Err(ErrorType::DuplicateFiles(WhichDuplicates::BaseAndOutput)),
                 BaseFile,
-                OutputFile
+                OutputFile,
             )
         } else if canonicalized_secret == canonicalized_output {
             with_contexts!(
                 Err(ErrorType::DuplicateFiles(WhichDuplicates::SecretAndOutput)),
                 SecretFile,
-                OutputFile
+                OutputFile,
             )
         } else {
             Ok(())

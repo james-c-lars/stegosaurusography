@@ -46,7 +46,7 @@ impl Decoder {
             with_contexts!(
                 Err(ErrorType::DuplicateFiles(WhichDuplicates::All)),
                 ErrorContext::EncodedFile,
-                ErrorContext::OutputFile
+                ErrorContext::OutputFile,
             )
         } else {
             Ok(())

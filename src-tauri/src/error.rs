@@ -61,6 +61,9 @@ macro_rules! with_contexts {
             }
         })
     };
+    ($result:expr, $($context:expr,)+) => {
+        with_contexts!($result, $($context),+)
+    };
 }
 
 /// Gives a BaseFile context to an error.
