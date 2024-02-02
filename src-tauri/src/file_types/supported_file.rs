@@ -7,7 +7,7 @@ use std::{
 use image::ImageFormat;
 use serde::Serialize;
 
-use crate::error::Error;
+use crate::error::ErrorType;
 
 /// Represents a type of file that we support encoding a secret file into.
 #[derive(Debug, Clone, Copy, Serialize)]
@@ -22,6 +22,7 @@ impl SupportedFileType {
     pub fn from_file_path<P: AsRef<Path>>(file_path: P) -> Option<SupportedFileType> {
         let file_path = file_path.as_ref();
         let extension = file_path.extension()?;
+        log::trace!("Parsed file extension");
 
         let maybe_file_path =
             ImageFormat::from_extension(extension).and_then(|image_format| match image_format {
@@ -50,13 +51,13 @@ impl SupportedFile {
     /// Attempts to open an existing file.
     ///
     /// Returns an error if the file isn't a supported type or if the file can't be opened.
-    pub fn open<P: AsRef<Path>>(file_path: P) -> Result<SupportedFile, Error> {
-        let file = File::open(&file_path)?;
-
-        match SupportedFileType::from_file_path(&file_path) {
-            Some(file_type) => Ok(SupportedFile { file, file_type }),
-            None => Err(Error::UnsupportedFileType(file_path.as_ref().into())),
-        }
+    pub fn open<P: AsRef<Path>>(file_path: P) -> Result<SupportedFile, ErrorType> {
+        SupportedFileType::from_file_path(&file_path)
+            .ok_or(ErrorType::UnsupportedFileType(file_path.as_ref().into()))
+            .and_then(|file_type| {
+                let file = File::open(&file_path)?;
+                Ok(SupportedFile { file, file_type })
+            })
     }
 
     /// Returns the file type as an enum.

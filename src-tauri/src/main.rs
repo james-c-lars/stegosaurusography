@@ -3,31 +3,20 @@
 
 mod requests {
     use std::fs::File;
-    use stegosaurusography::{get_properties, Decoder, Encoder, FileProperties, Result};
-
-    // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-    #[tauri::command]
-    pub fn greet(name: &str) -> String {
-        log::info!("Greet request received!");
-        log::trace!("Greet Request > name={name}");
-
-        File::create("./wow.txt").expect("Failed to create file");
-        format!("Hello, {}! You've been greeted from Rust!", name)
-    }
+    use stegosaurusography::{
+        get_properties, secret_context, Decoder, Encoder, FileProperties, Result,
+    };
 
     /// Used to do the encoding of the secret file into the base file. The results will be
-    /// stored in the encoded file.
+    /// stored in the output file.
     #[tauri::command]
-    pub async fn encode(base_file: &str, secret_file: &str, encoded_file: &str) -> Result<()> {
+    pub async fn encode(base_file: &str, secret_file: &str, output_file: &str) -> Result<()> {
         log::info!("Encoding request received!");
-        log::trace!("Encode Request > base_file={base_file}, secret_file={secret_file}, encoded_file={encoded_file}");
+        log::trace!("Encode Request > base_file={base_file}, secret_file={secret_file}, output_file={output_file}");
 
-        Encoder::new(base_file, secret_file, encoded_file)
+        Encoder::new(base_file, secret_file, output_file)
             .and_then(|mut encoder| encoder.encode())
-            .map_err(|err| {
-                log::error!("{err:?}");
-                err
-            })
+            .map(|_| log::info!("Completed the encoding request!"))
     }
 
     /// Used to do the decoding of the encoded file. The results will be stored in the output file.
@@ -38,10 +27,7 @@ mod requests {
 
         Decoder::new(encoded_file, output_file)
             .and_then(|mut decoder| decoder.decode())
-            .map_err(|err| {
-                log::error!("{err:?}");
-                err
-            })
+            .map(|_| log::info!("Completed the decoding request!"))
     }
 
     /// Used to get the properties of the base file. For example, how much data can be stored
@@ -51,25 +37,26 @@ mod requests {
         log::info!("File property request received!");
         log::trace!("File Property Request > base_file={base_file}");
 
-        get_properties(base_file).map_err(|err| {
-            log::error!("{err:?}");
-            err
+        get_properties(base_file).map(|props| {
+            log::info!("File properties are {props:?}");
+            props
         })
     }
 
     /// Gets the size of a file.
+    ///
+    /// Useful when paired with base_file_properties as it allows us to see whether a given secret file
+    /// is small enough to fit within a base file.
     #[tauri::command]
     pub async fn file_size(file: &str) -> Result<u64> {
         log::info!("File size request received!");
         log::trace!("File Size Request > file={file}");
 
-        File::open(file)
-            .and_then(|file| file.metadata())
-            .map(|metadata| metadata.len())
-            .map_err(|err| {
-                log::error!("{err:?}");
-                err.into()
-            })
+        secret_context!(File::open(file).and_then(|file| file.metadata())).map(|metadata| {
+            let file_size = metadata.len();
+            log::info!("File size is {file_size}");
+            file_size
+        })
     }
 }
 
@@ -81,7 +68,6 @@ fn main() {
 
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            requests::greet,
             requests::encode,
             requests::decode,
             requests::base_file_properties,

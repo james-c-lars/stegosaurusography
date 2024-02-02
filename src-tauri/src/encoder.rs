@@ -4,8 +4,8 @@ use std::{
 };
 
 use crate::{
-    error::{Error, WhichDuplicates},
-    file_types::base_file::BaseFile,
+    base_context, file_types::base_file::BaseFile, output_context, secret_context, with_contexts,
+    ErrorType, Result, WhichDuplicates,
 };
 
 /// Handles the steganographic process of encoding a hidden file inside a base file.
@@ -21,14 +21,14 @@ impl Encoder {
         base_file_path: impl AsRef<Path>,
         secret_file_path: impl AsRef<Path>,
         output_file_path: impl AsRef<Path>,
-    ) -> Result<Encoder, Error> {
-        log::trace!("Opening files");
-        let base_file = BaseFile::open(&base_file_path)?;
-        let secret_file = File::open(&secret_file_path)?;
-        let output_file = File::create(&output_file_path)?;
-
-        log::trace!("Checking for duplicates");
+    ) -> Result<Encoder> {
         Encoder::check_for_duplicate_files(&base_file_path, &secret_file_path, &output_file_path)?;
+        log::trace!("Ensured no duplicate files");
+
+        let base_file = BaseFile::open(&base_file_path)?;
+        let secret_file = secret_context!(File::open(&secret_file_path))?;
+        let output_file = output_context!(File::create(&output_file_path))?;
+        log::trace!("Opened all files");
 
         Ok(Encoder {
             base_file,
@@ -42,28 +42,47 @@ impl Encoder {
         base_file_path: impl AsRef<Path>,
         secret_file_path: impl AsRef<Path>,
         output_file_path: impl AsRef<Path>,
-    ) -> crate::Result<()> {
-        let canonicalized_base = canonicalize(base_file_path)?;
-        let canonicalized_secret = canonicalize(secret_file_path)?;
-        let canonicalized_output = canonicalize(output_file_path)?;
+    ) -> Result<()> {
+        let canonicalized_base = base_context!(canonicalize(base_file_path))?;
+        let canonicalized_secret = secret_context!(canonicalize(secret_file_path))?;
+        let canonicalized_output = output_context!(canonicalize(output_file_path))?;
+        log::trace!("Canonicalized file paths");
 
+        use crate::error::ErrorContext::*;
         if canonicalized_base == canonicalized_secret {
             if canonicalized_secret == canonicalized_output {
-                Err(Error::DuplicateFiles(WhichDuplicates::All))
+                with_contexts!(
+                    Err(ErrorType::DuplicateFiles(WhichDuplicates::All)),
+                    BaseFile,
+                    SecretFile,
+                    OutputFile,
+                )
             } else {
-                Err(Error::DuplicateFiles(WhichDuplicates::BaseAndSecret))
+                with_contexts!(
+                    Err(ErrorType::DuplicateFiles(WhichDuplicates::BaseAndSecret)),
+                    BaseFile,
+                    SecretFile,
+                )
             }
         } else if canonicalized_base == canonicalized_output {
-            Err(Error::DuplicateFiles(WhichDuplicates::BaseAndOutput))
+            with_contexts!(
+                Err(ErrorType::DuplicateFiles(WhichDuplicates::BaseAndOutput)),
+                BaseFile,
+                OutputFile,
+            )
         } else if canonicalized_secret == canonicalized_output {
-            Err(Error::DuplicateFiles(WhichDuplicates::SecretAndOutput))
+            with_contexts!(
+                Err(ErrorType::DuplicateFiles(WhichDuplicates::SecretAndOutput)),
+                SecretFile,
+                OutputFile,
+            )
         } else {
             Ok(())
         }
     }
 
     /// Encodes the hidden file into the base file, and writes the results to the output file.
-    pub fn encode(&mut self) -> crate::Result<()> {
+    pub fn encode(&mut self) -> Result<()> {
         self.base_file
             .encode_to(&self.secret_file, &mut self.output_file)
     }

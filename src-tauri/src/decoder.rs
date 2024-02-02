@@ -4,8 +4,8 @@ use std::{
 };
 
 use crate::{
-    error::{Error, WhichDuplicates},
-    file_types::encoded_file::EncodedFile,
+    encoded_context, file_types::encoded_file::EncodedFile, output_context, with_contexts,
+    ErrorContext, ErrorType, Result, WhichDuplicates,
 };
 
 /// Handles the steganographic process of decoding an encoded file.
@@ -19,13 +19,13 @@ impl Decoder {
     pub fn new(
         encoded_file_path: impl AsRef<Path>,
         output_file_path: impl AsRef<Path>,
-    ) -> Result<Decoder, Error> {
-        log::trace!("Opening files");
-        let encoded_file = EncodedFile::open(&encoded_file_path)?;
-        let output_file = File::create(&output_file_path)?;
-
-        log::trace!("Checking for duplicates");
+    ) -> Result<Decoder> {
         Decoder::check_for_duplicate_files(&encoded_file_path, &output_file_path)?;
+        log::trace!("Ensured no duplicate files");
+
+        let encoded_file = EncodedFile::open(&encoded_file_path)?;
+        let output_file = output_context!(File::create(&output_file_path))?;
+        log::trace!("Opened all files");
 
         Ok(Decoder {
             encoded_file,
@@ -37,19 +37,24 @@ impl Decoder {
     fn check_for_duplicate_files(
         encoded_file_path: impl AsRef<Path>,
         output_file_path: impl AsRef<Path>,
-    ) -> crate::Result<()> {
-        let canonicalized_encoded = canonicalize(encoded_file_path)?;
-        let canonicalized_output = canonicalize(output_file_path)?;
+    ) -> Result<()> {
+        let canonicalized_encoded = encoded_context!(canonicalize(encoded_file_path))?;
+        let canonicalized_output = output_context!(canonicalize(output_file_path))?;
+        log::trace!("Canonicalized file paths");
 
         if canonicalized_encoded == canonicalized_output {
-            Err(Error::DuplicateFiles(WhichDuplicates::All))
+            with_contexts!(
+                Err(ErrorType::DuplicateFiles(WhichDuplicates::All)),
+                ErrorContext::EncodedFile,
+                ErrorContext::OutputFile,
+            )
         } else {
             Ok(())
         }
     }
 
     /// Decodes the encoded file, and writes the results to the output file.
-    pub fn decode(&mut self) -> crate::Result<()> {
+    pub fn decode(&mut self) -> Result<()> {
         self.encoded_file.decode_to(&mut self.output_file)
     }
 }
