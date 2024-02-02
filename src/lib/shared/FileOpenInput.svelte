@@ -11,7 +11,7 @@
             filters: [
                 {
                     name: "Image",
-                    extensions: ["jpg", "jpeg", "png", "svg"],
+                    extensions: ["jpg", "jpeg", "png", "svg", "txt"],
                 },
             ],
         });

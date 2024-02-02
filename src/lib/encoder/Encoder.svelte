@@ -11,7 +11,7 @@
         await invoke("encode", {
             baseFile,
             secretFile,
-            encodedFile,
+            outputFile: encodedFile,
         });
     }
 
