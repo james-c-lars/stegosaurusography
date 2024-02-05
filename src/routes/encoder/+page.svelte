@@ -1,5 +1,5 @@
 <script lang="ts">
-    import FileOpenInput from "../../lib/files/FileOpenInput.svelte";
+    import FileSelector from "$lib/files/FileSelector.svelte";
     import { invoke } from "@tauri-apps/api";
 
     let baseFile: string | undefined = undefined;
@@ -18,13 +18,15 @@
 <div class="encoder-view">
     <div class="encoder-options">
         <div class="encoder-option">
-            <p>Base File: {baseFile}</p>
-            <FileOpenInput bind:selectedFile={baseFile} dialogTitle="Select Base File" />
+            <FileSelector bind:selectedFile={baseFile} dialogTitle="Select Base File" />
         </div>
 
         <div class="encoder-option">
-            <p>Secret File: {secretFile}</p>
-            <FileOpenInput bind:selectedFile={secretFile} dialogTitle="Select Secret File" />
+            <div>
+                <button>File</button>
+                <button>Text</button>
+            </div>
+            <FileSelector bind:selectedFile={secretFile} dialogTitle="Select Secret File" />
         </div>
     </div>
 
