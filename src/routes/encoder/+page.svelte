@@ -18,7 +18,7 @@
 <div class="encoder-view">
     <div class="encoder-options">
         <div class="encoder-option">
-            <FileSelector bind:selectedFile={baseFile} dialogTitle="Select Base File" />
+            <FileSelector bind:selected_file={baseFile} title="Base File" />
         </div>
 
         <div class="encoder-option">
@@ -26,7 +26,7 @@
                 <button>File</button>
                 <button>Text</button>
             </div>
-            <FileSelector bind:selectedFile={secretFile} dialogTitle="Select Secret File" />
+            <FileSelector bind:selected_file={secretFile} title="Secret File" />
         </div>
     </div>
 
