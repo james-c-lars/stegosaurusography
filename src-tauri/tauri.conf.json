@@ -20,6 +20,10 @@
       "dialog": {
         "open": true,
         "save": true
+      },
+      "protocol": {
+        "asset": true,
+        "assetScope": ["**"]
       }
     },
     "bundle": {

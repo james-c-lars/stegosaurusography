@@ -1,12 +1,12 @@
 <script lang="ts">
     import { open } from "@tauri-apps/api/dialog";
+    import { convertFileSrc } from "@tauri-apps/api/tauri";
 
-    export let title = "This is a File";
-
-    let selected_file: string | undefined = undefined;
+    export let title = "Base File";
+    export let selected_file: string | undefined = undefined;
 
     async function openFile(): Promise<void> {
-        const selection = await open();
+        const selection = await open({ multiple: false });
 
         selected_file = Array.isArray(selection) ? selection.at(0) : selection ?? undefined;
     }
@@ -18,10 +18,10 @@
 
 <div class="file-select" class:file-selected={selected_file}>
     {#if selected_file}
-        <img class="file-select-preview" src={selected_file} alt="The selected file" />
+        <img class="file-select-preview" src={convertFileSrc(selected_file)} alt="The selected file" />
         <div class="file-select-top-info">
-            <span class="file-select-title">{title}</span>
-            <button class="file-select-close" on:click={closeFile}>X</button>
+            <b class="file-select-title">{title}</b>
+            <button class="file-select-close" on:click={closeFile}>✖</button>
         </div>
         <span class="file-select-path">{selected_file}</span>
     {:else}
@@ -29,15 +29,10 @@
     {/if}
 </div>
 
-<style>
+<style src="./styles.css">
     .file-select {
-        --total-width: 25ch;
-        --total-height: var(--total-width);
-        --interior-padding-x: 2ch;
-        --interior-padding-y: var(--interior-padding-x);
-
-        width: calc(var(--total-width) - 2 * var(--interior-padding-x));
-        height: calc(var(--total-height) - 2 * var(--interior-padding-y));
+        width: 25ch;
+        height: 25ch;
         position: relative;
 
         display: flex;
@@ -49,8 +44,6 @@
 
         align-items: center;
         justify-content: center;
-
-        padding: var(--interior-padding-y) var(--interior-padding-x);
     }
 
     .file-select.file-selected {
@@ -59,8 +52,11 @@
     }
 
     .file-select-preview {
+        width: 100%;
+        height: 100%;
         position: absolute;
-        inset: 0;
+
+        object-fit: cover;
     }
 
     .file-select-title,
@@ -81,5 +77,27 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         font-size: 0.7em;
+    }
+
+    .file-select-title, .file-select-path {
+        margin: 1ch 0;
+        padding: 0 2ch;
+
+        background-color: hsla(0, 0%, 0%, 0.3);
+        color: white;
+    }
+
+    .file-select-close {
+        padding: 0 1.5ch;
+        margin: 0 1.5ch;
+
+        background-color: transparent;
+        border: none;
+
+        color: red;
+        font-size: 1em;
+        -webkit-text-stroke: 1px hsla(0, 0%, 0%, 0.3);
+
+        transform: scale(1.5);
     }
 </style>
