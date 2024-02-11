@@ -23,7 +23,7 @@
             <b class="file-select-title">{title}</b>
             <button class="file-select-close" on:click={closeFile}>✖</button>
         </div>
-        <span class="file-select-path">{selected_file}</span>
+        <span class="file-select-path" title={selected_file}>{selected_file}</span>
     {:else}
         <button class="file-select-open" on:click={openFile}>+</button>
     {/if}
@@ -31,8 +31,8 @@
 
 <style src="./styles.css">
     .file-select {
-        width: 25ch;
-        height: 25ch;
+        width: 100%;
+        height: 100%;
         position: relative;
 
         display: flex;
@@ -88,8 +88,8 @@
     }
 
     .file-select-close {
-        padding: 0 1.5ch;
-        margin: 0 1.5ch;
+        margin: auto 3ch auto 0;
+        height: fit-content;
 
         background-color: transparent;
         border: none;
