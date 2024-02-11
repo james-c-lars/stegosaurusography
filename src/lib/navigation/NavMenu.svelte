@@ -1,4 +1,10 @@
-<nav class="nav-menu">
+<script lang="ts">
+    import "../../routes/styles.css";
+
+    export let open: boolean;
+</script>
+
+<nav class="nav-menu" class:open={open}>
     <a href="/encoder" class="nav-button">Encode</a>
     <a href="/decoder" class="nav-button">Decode</a>
     <a href="/about" class="nav-button">About</a>
@@ -6,12 +12,17 @@
 
 <style>
     .nav-menu {
-        display: flex;
+        display: none;
         flex-direction: column;
-        flex-grow: 1;
     }
 
     .nav-button:hover {
         background: mediumaquamarine;
+    }
+
+    .nav-menu.open,
+    .nav-menu:hover
+     {
+        display: flex;
     }
 </style>

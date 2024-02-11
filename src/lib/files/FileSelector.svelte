@@ -1,6 +1,7 @@
 <script lang="ts">
     import { open } from "@tauri-apps/api/dialog";
     import { convertFileSrc } from "@tauri-apps/api/tauri";
+    import "../../routes/styles.css";
 
     export let title = "Base File";
     export let selected_file: string | undefined = undefined;
@@ -29,7 +30,7 @@
     {/if}
 </div>
 
-<style src="./styles.css">
+<style>
     .file-select {
         width: 100%;
         height: 100%;
@@ -47,8 +48,8 @@
     }
 
     .file-select.file-selected {
-        justify-content: space-between;
         align-items: normal;
+        justify-content: space-between;
     }
 
     .file-select-preview {
@@ -57,13 +58,6 @@
         position: absolute;
 
         object-fit: cover;
-    }
-
-    .file-select-title,
-    .file-select-close,
-    .file-select-path,
-    .file-select-open {
-        position: relative;
     }
 
     .file-select-top-info {
@@ -80,6 +74,7 @@
     }
 
     .file-select-title, .file-select-path {
+        position: relative;
         margin: 1ch 0;
         padding: 0 2ch;
 
@@ -88,8 +83,9 @@
     }
 
     .file-select-close {
-        margin: auto 3ch auto 0;
         height: fit-content;
+        position: relative;
+        margin: auto 3ch auto 0;
 
         background-color: transparent;
         border: none;

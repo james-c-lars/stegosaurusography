@@ -1,55 +1,31 @@
-<script>
-    import NavMenu from "../lib/navigation/NavMenu.svelte";
+<script lang="ts">
+    import AppBar from "$lib/app_bar/AppBar.svelte";
+    import NavMenu from "$lib/navigation/NavMenu.svelte";
     import "./styles.css";
+
+    let navMenuOpen: boolean;
 </script>
 
 <main class="app-view">
-    <div class="nav-view">
-        <NavMenu />
-    </div>
-    <div class="main-view">
-        <div class="app-bar">
-            <button>Menu</button>
-            <span class="app-bar-divider"></span>
-            <button>Dark Mode</button>
-        </div>
-
-        <div class="tool-view">
-            <slot />
-        </div>
-    </div>
+    <AppBar bind:navMenuOpen={navMenuOpen} />
+    <NavMenu bind:open={navMenuOpen} />
+    <slot />
 </main>
 
 <style>
     .app-view {
-        display: flex;
-        flex-direction: row;
         height: 100%;
+
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto 1fr;
     }
 
-    .nav-view {
-        display: inline-block;
-        height: 100%;
+    :global(.app-view > *:first-child) {
+        grid-column: span 2;
     }
 
-    .main-view {
-        display: inline-flex;
-        flex-grow: 1;
-        flex-direction: column;
-    }
-
-    .app-bar {
-        display: flex;
-    }
-
-    .app-bar-divider {
-        flex-grow: 1;
-    }
-
-    .tool-view {
-        height: 100%;
-        display: flex;
-        flex-direction: row;
-        flex-grow: 1;
+    :global(.app-view > *:last-child) {
+        grid-column: 2;
     }
 </style>

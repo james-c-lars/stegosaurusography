@@ -1,6 +1,7 @@
 <script lang="ts">
     import FileSelector from "$lib/files/FileSelector.svelte";
     import { invoke } from "@tauri-apps/api";
+    import "../styles.css";
 
     let textBasedSecret: boolean = false;
 
@@ -24,14 +25,14 @@
         <button on:click={() => textBasedSecret = true}>Text</button>
     </span>
     {#if textBasedSecret}
-        <input />
+        <textarea />
     {:else}
         <FileSelector bind:selected_file={secretFile} title="Secret File" />
     {/if}
     <button class="encode-button" on:click={encode} disabled={!(baseFile && secretFile)}>ENCODE!</button>
 </div>
 
-<style src="./styles.css">
+<style>
     .encoder-view {
         width: 100%;
         height: 100%;
