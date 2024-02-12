@@ -6,50 +6,51 @@
     export let title = "Base File";
     export let selected_file: string | undefined = undefined;
 
-    async function openFile(): Promise<void> {
-        const selection = await open({ multiple: false });
+    async function click(): Promise<void> {
+        if (selected_file) {
+            selected_file = undefined;
+        } else {
+            const selection = await open({ multiple: false });
 
-        selected_file = Array.isArray(selection) ? selection.at(0) : selection ?? undefined;
-    }
-
-    function closeFile(): void {
-        selected_file = undefined;
+            selected_file = Array.isArray(selection) ? selection.at(0) : (selection ?? undefined);
+        }
     }
 </script>
 
-<div class="file-select" class:file-selected={selected_file}>
+<button class="file-select" class:file-selected={selected_file} on:click={click}>
     {#if selected_file}
         <img class="file-select-preview" src={convertFileSrc(selected_file)} alt="The selected file" />
         <div class="file-select-top-info">
-            <b class="file-select-title">{title}</b>
-            <button class="file-select-close" on:click={closeFile}>✖</button>
+            <span class="file-select-title">{title}</span>
+            <span class="file-select-close">✖</span>
         </div>
         <span class="file-select-path" title={selected_file}>{selected_file}</span>
     {:else}
-        <button class="file-select-open" on:click={openFile}>+</button>
+        <span class="file-select-title">{title}</span>
+        <span class="file-select-open">+</span>
     {/if}
-</div>
+</button>
 
 <style>
     .file-select {
         width: 100%;
         height: 100%;
         position: relative;
+        padding: 0;
 
         display: flex;
         flex-direction: column;
+        align-items: normal;
+        justify-content: space-between;
 
-        border: 0.5ch solid aquamarine;
-        border-radius: 5ch;
+        border-radius: 3rem;
+        border: none;
         overflow: hidden;
-
-        align-items: center;
-        justify-content: center;
+        background: linear-gradient(180deg, hsl(0, 0%, 12%) 0%, hsl(0, 0%, 16%) 100%);
     }
 
     .file-select.file-selected {
-        align-items: normal;
-        justify-content: space-between;
+        border: 0.3rem solid hsl(290, 99%, 23%);
     }
 
     .file-select-preview {
@@ -65,35 +66,65 @@
         justify-content: space-between;
     }
 
+    .file-select-title, .file-select-path {
+        position: relative;
+        margin: 1rem 0;
+        padding: 0.2rem 1rem;
+
+        color: white;
+    }
+
+    .file-select-title {
+        font-size: 1.4em;
+        font-weight: bold;
+    }
+
+    .file-select.file-selected .file-select-title {
+        background-color: hsla(0, 0%, 0%, 0.3);
+    }
+
     .file-select-path {
         overflow: hidden;
+        
+        background-color: hsla(0, 0%, 0%, 0.3);
 
         white-space: nowrap;
         text-overflow: ellipsis;
-        font-size: 0.7em;
-    }
-
-    .file-select-title, .file-select-path {
-        position: relative;
-        margin: 1ch 0;
-        padding: 0 2ch;
-
-        background-color: hsla(0, 0%, 0%, 0.3);
-        color: white;
     }
 
     .file-select-close {
         height: fit-content;
         position: relative;
-        margin: auto 3ch auto 0;
+        margin: auto 1rem auto 0;
 
-        background-color: transparent;
-        border: none;
+        color: darkred;
+        font-size: 3em;
+        line-height: 1em;
 
-        color: red;
-        font-size: 1em;
-        -webkit-text-stroke: 1px hsla(0, 0%, 0%, 0.3);
+        transition: font-size 0.1s;
+    }
 
-        transform: scale(1.5);
+    .file-select:hover .file-select-close,
+    .file-select:focus .file-select-close {
+        font-size: 3.3em;
+    }
+
+    .file-select-open {
+        position: absolute;
+        inset: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        color: darkgreen;
+        font-size: 5em;
+
+        transition: font-size 0.1s;
+    }
+
+    .file-select:hover .file-select-open,
+    .file-select:focus .file-select-open {
+        font-size: 6.2em;
     }
 </style>
