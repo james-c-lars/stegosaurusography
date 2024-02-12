@@ -72,22 +72,22 @@
         grid-column: span 2;
 
         border: none;
-        background: linear-gradient(90deg, hsl(290, 99%, 30%) 0%, hsl(290, 99%, 33%) 100%);
+        background: linear-gradient(90deg, var(--accent-30) 0%, var(--accent-33) 100%);
         
-        color: white;
+        color: var(--text-on-accent);
         font-weight: bolder;
         font-size: 1.5em;
         transition: font-size .1s;
     }
 
     .encode-button:disabled {
-        background: linear-gradient(90deg, hsl(290, 99%, 12%) 0%, hsl(290, 99%, 13%) 100%);
-        color: grey;
+        background: linear-gradient(90deg, var(--accent-12) 0%, var(--accent-13) 100%);
+        color: var(--text-deemphasized);
     }
 
     .encode-button:enabled:hover,
     .encode-button:enabled:focus {
-        background: linear-gradient(90deg, hsl(290, 99%, 27%) 0%, hsl(290, 99%, 30%) 100%);
+        background: linear-gradient(90deg, var(--accent-27) 0%, var(--accent-30) 100%);
         font-size: 1.6em;
     }
 
@@ -97,6 +97,8 @@
         position: absolute;
         inset: 0;
         margin: 0.125rem;
+
+        background-color: transparent;
     }
 
     .text-or-file-select {
@@ -110,11 +112,11 @@
         width: 3rem;
         height: 2rem;
 
-        border: 0.125rem solid hsl(290, 99%, 30%);
+        border: 0.125rem solid var(--accent-32);
 
-        color: grey;
+        color: var(--text-deemphasized);
         text-align: center;
-        line-height: 1.75rem;
+        line-height: 1.75rem; /* A magic number for centering the text in the buttons */
 
         transition: font-size 0.1s;
     }
@@ -129,13 +131,13 @@
         border-left: 0;
     }
 
-    .text-or-file.checked {
-        background: linear-gradient(90deg, hsl(290, 99%, 30%) 0%, hsl(290, 99%, 31%) 100%);
-        color: white;
+    .text-or-file:hover {
+        color: var(--text-color);
+        font-size: 1.0625em;
     }
 
-    .text-or-file:hover {
-        color: white;
-        font-size: 1.0625em;
+    .text-or-file.checked {
+        background: linear-gradient(90deg, var(--accent-30) 0%, var(--accent-33) 100%);
+        color: var(--text-on-accent);
     }
 </style>

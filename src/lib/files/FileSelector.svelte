@@ -48,11 +48,11 @@
         border-radius: 3rem;
         border: none;
         overflow: hidden;
-        background: linear-gradient(180deg, hsl(0, 0%, 12%) 0%, hsl(0, 0%, 16%) 100%);
+        background: linear-gradient(180deg, var(--bg-high-contrast) 0%, var(--bg-low-contrast) 100%);
     }
 
     .file-select.file-selected {
-        border: 0.3rem solid hsl(290, 99%, 23%);
+        border: 0.3rem solid var(--accent-23);
     }
 
     .file-select-preview {
@@ -72,23 +72,22 @@
         position: relative;
         margin: 1rem 0;
         padding: 0.2rem 1rem;
-
-        color: white;
     }
 
     .file-select-title {
         font-size: 1.4em;
         font-weight: bold;
+        color: var(--text-color);
     }
 
-    .file-select.file-selected .file-select-title {
+    .file-select.file-selected .file-select-title,
+    .file-select.file-selected .file-select-path {
         background-color: hsla(0, 0%, 0%, 0.3);
+        color: white;
     }
 
     .file-select-path {
         overflow: hidden;
-        
-        background-color: hsla(0, 0%, 0%, 0.3);
 
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -99,7 +98,7 @@
         position: relative;
         margin: auto 1rem auto 0;
 
-        color: darkred;
+        color: var(--cancel-color);
         font-size: 3em;
         line-height: 1em;
 
@@ -118,7 +117,7 @@
         align-items: center;
         justify-content: center;
 
-        color: darkgreen;
+        color: var(--accept-color);
         font-size: 5em;
 
         transition: font-size 0.1s;
