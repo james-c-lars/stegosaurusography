@@ -20,10 +20,12 @@
 <button class="file-select" class:file-selected={selected_file} on:click={click}>
     {#if selected_file}
         <img class="file-select-preview" src={convertFileSrc(selected_file)} alt="The selected file" />
+
         <div class="file-select-top-info">
             <span class="file-select-title">{title}</span>
             <span class="file-select-close">✖</span>
         </div>
+
         <span class="file-select-path" title={selected_file}>{selected_file}</span>
     {:else}
         <span class="file-select-title">{title}</span>
@@ -104,8 +106,7 @@
         transition: font-size 0.1s;
     }
 
-    .file-select:hover .file-select-close,
-    .file-select:focus .file-select-close {
+    .file-select:hover .file-select-close {
         font-size: 3.3em;
     }
 
@@ -123,8 +124,7 @@
         transition: font-size 0.1s;
     }
 
-    .file-select:hover .file-select-open,
-    .file-select:focus .file-select-open {
+    .file-select:hover .file-select-open {
         font-size: 6.2em;
     }
 </style>

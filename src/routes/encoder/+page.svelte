@@ -16,14 +16,24 @@
             outputFile,
         });
     }
+
+    function change(event: Event) {
+        textBasedSecret = (event.target as HTMLInputElement | null)?.value === "text";
+    }
 </script>
 
 <div class="encoder-view">
     <FileSelector bind:selected_file={baseFile} title="Base File" />
 
-    <span>
-        <button on:click={() => textBasedSecret = false}>File</button>
-        <button on:click={() => textBasedSecret = true}>Text</button>
+    <span class="text-or-file-select">
+        <label class="text-or-file" class:checked={!textBasedSecret}>
+            File
+            <input type="radio" name="text-or-file" value="file" on:change={change} checked />
+        </label>
+        <label class="text-or-file" class:checked={textBasedSecret}>
+            Text
+            <input type="radio" name="text-or-file" value="text" on:change={change} />
+        </label>
     </span>
     {#if textBasedSecret}
         <textarea />
@@ -41,14 +51,12 @@
     .encoder-view {
         width: 100%;
         height: 100%;
-        padding: 1rem 1.5rem;
+        padding: 1rem 1.5rem 2rem 1.5rem;
 
         display: grid;
         gap: 1rem 1.5rem;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: auto 1fr auto;
-
-        background: hsl(0, 0%, 14%);
     }
 
     :global(.encoder-view > *:first-child) {
@@ -81,5 +89,53 @@
     .encode-button:enabled:focus {
         background: linear-gradient(90deg, hsl(290, 99%, 27%) 0%, hsl(290, 99%, 30%) 100%);
         font-size: 1.6em;
+    }
+
+    input[name = "text-or-file"] {
+        appearance: none;
+
+        position: absolute;
+        inset: 0;
+        margin: 0.125rem;
+    }
+
+    .text-or-file-select {
+        display: inline-flex;
+    }
+
+    .text-or-file {
+        --border-radius: 15%;
+
+        position: relative;
+        width: 3rem;
+        height: 2rem;
+
+        border: 0.125rem solid hsl(290, 99%, 30%);
+
+        color: grey;
+        text-align: center;
+        line-height: 1.75rem;
+
+        transition: font-size 0.1s;
+    }
+
+    .text-or-file:first-child {        
+        border-radius: var(--border-radius) 0 0 var(--border-radius);
+        border-right: 0;
+    }
+
+    .text-or-file:last-child {
+        border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        border-left: 0;
+    }
+
+    .text-or-file.checked {
+        background: linear-gradient(90deg, hsl(290, 99%, 30%) 0%, hsl(290, 99%, 31%) 100%);
+        color: white;
+    }
+
+    .text-or-file:hover {
+        color: white;
+        font-size: 1.0625em;
     }
 </style>
