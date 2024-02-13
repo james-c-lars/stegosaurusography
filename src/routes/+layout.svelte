@@ -3,29 +3,45 @@
     import NavMenu from "$lib/navigation/NavMenu.svelte";
     import "./styles.css";
 
-    let navMenuOpen: boolean;
+    let navMenuOpen: boolean = false;
+    let navMenuVisible: boolean = navMenuOpen;
+
+    let appView: HTMLElement;
+
+    function transitionend(event: Event) {
+        if (event.target === appView && !navMenuOpen) {
+            navMenuVisible = false;
+        }
+    }
+
+    function transitionstart(event: Event) {
+        if (event.target === appView && navMenuOpen) {
+            navMenuVisible = true;
+        }
+    }
 </script>
 
-<main class="app-view">
+<main class="app-view" class:nav-menu-open={navMenuOpen} bind:this={appView}
+      on:transitionend={transitionend} on:transitionstart={transitionstart}>
     <AppBar bind:navMenuOpen={navMenuOpen} />
-    <NavMenu bind:open={navMenuOpen} />
+    <NavMenu bind:open={navMenuVisible} />
     <slot />
 </main>
 
 <style>
     .app-view {
+        --nav-menu-width: 6rem;
+
         height: 100%;
+        position: relative;
 
-        display: grid;
-        grid-template-columns: auto 1fr;
-        grid-template-rows: auto 1fr;
+        display: flex;
+        flex-direction: column;
+
+        transition: margin-left 0.5s ease-in-out;
     }
 
-    :global(.app-view > *:first-child) {
-        grid-column: span 2;
-    }
-
-    :global(.app-view > *:last-child) {
-        grid-column: 2;
+    .app-view.nav-menu-open {
+        margin-left: var(--nav-menu-width);
     }
 </style>

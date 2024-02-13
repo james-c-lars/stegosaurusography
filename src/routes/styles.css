@@ -32,6 +32,8 @@
     --accent-32: hsl(var(--accent-hue), var(--accent-saturation), 32%);
     --accent-33: hsl(var(--accent-hue), var(--accent-saturation), 33%);
 
+    --accent-subtle: hsl(var(--accent-hue), 70%, 93%);
+
     --text-on-accent: #f6f6f6;
 
     --accept-color: darkgreen;
@@ -57,6 +59,7 @@ html, body {
         --text-deemphasized: grey;
 
         --accent-saturation: 100%;
+        --accent-subtle: hsl(var(--accent-hue), 25%, 14%);
     }
 
     a:hover {
