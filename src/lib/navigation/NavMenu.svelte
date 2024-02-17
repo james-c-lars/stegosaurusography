@@ -1,8 +1,11 @@
 <script lang="ts">
     import "../../routes/styles.css";
 
+    // This lets the <NavMenu> know whether it should be visually seen by the user
+    // Also impacts whether the menu is interactable
     export let open: boolean;
 
+    // This represents which tab is currently selected from the menu
     enum Tab {
         Encode,
         Decode,
@@ -28,7 +31,9 @@
 </nav>
 
 <style>
+    /* The root element */
     .nav-menu {
+        /* Positioning the nav menu immediately to the left of the left margin of its parent */
         width: var(--nav-menu-width);
         height: 100%;
         position: absolute;
@@ -43,7 +48,9 @@
         background: linear-gradient(180deg, var(--bg-high-contrast) 0%, var(--bg-low-contrast) 100%);
     }
 
+    /* Each <a> in the menu */
     .nav-button {
+        /* Used for later calculations for centering the selected accent shape */
         --left-padding: 1rem;
         --line-height: 2rem;
 
@@ -59,14 +66,17 @@
         color: var(--text-color);
     }
 
+    /* This pseudo element is the visual accent mark that shows in front of the selected <a> */
     .nav-button.selected::before {
         content: '';
 
+        /* Used in math for centering the selection indicator */
         --diameter: 0.375rem;
 
         width: var(--diameter);
         aspect-ratio: 1;
         position: absolute;
+        /* Visually centering the element on the left of its parent <a> */
         left: calc((var(--left-padding) - var(--diameter)) / 2);
         top: calc((var(--line-height) - var(--diameter)) / 2);
 
