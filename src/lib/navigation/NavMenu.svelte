@@ -28,6 +28,7 @@
         on:click={() => currentTab = Tab.About}>
         About
     </a>
+    <!-- TODO: Create a page for tweaking the appearance of the app. Switching between dark and light mode, tweaking --accent-hue in CSS. -->
 </nav>
 
 <style>

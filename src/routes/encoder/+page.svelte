@@ -19,11 +19,14 @@
     async function encode() {
         // TODO: Need to get outputFile before invoking encode
 
-        await invoke("encode", {
+        let result = await invoke("encode", {
             baseFile,
             secretFile,
             outputFile,
         });
+
+        // TODO: Use the possible error result of the encode operation
+        // We'll want to display an error if an error gets raised by Rust
     }
 
     // Called whenever the radio buttons for File and Text change value
@@ -31,6 +34,11 @@
         // The value of the buttons are "text" and "file"
         textBasedSecret = (event.target as HTMLInputElement | null)?.value === "text";
     }
+
+    // TODO: Preemptively use the base_file_properties and file_size Rust backend functions
+    // to determine if a selected secret file will fit inside of the base file.
+    // The user shouldn't have to press Encode and select an output file before being told
+    // that their base file isn't big enough.
 </script>
 
 <div class="encoder-view">

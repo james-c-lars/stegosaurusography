@@ -25,6 +25,7 @@
 
 <button class="file-select" class:file-selected={selected_file} on:click={click}>
     {#if selected_file}
+        <!-- TODO: Figure out what to display if a non-image file is selected -->
         <!-- This image is in the background and shows the selected file -->
         <img class="file-select-preview" src={convertFileSrc(selected_file)} alt="The selected file" />
 

@@ -105,7 +105,7 @@ pub enum ErrorType {
     /// An error due to reading or writing from the file system.
     IOError(String),
     /// An error due to trying to perform an operation on an unsupported file type.
-    UnsupportedFileType(Box<Path>),
+    UnsupportedFileType(Box<Path>), // TODO: Should this return just the file extension instead?
     /// An error due to trying to encode a secret file into a base file too small to contain it.
     BaseFileNotBigEnough {
         /// The amount of space available in the base file for encoding.

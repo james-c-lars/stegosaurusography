@@ -58,6 +58,8 @@ mod requests {
             file_size
         })
     }
+
+    // TODO: Add a command to allow the front-end to send messages to be logged for user interactions
 }
 
 fn main() {
