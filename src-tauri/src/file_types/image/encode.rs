@@ -27,7 +27,7 @@ pub fn encode(
     let format = reader.format().expect("We just guessed the format");
     let mut image = base_context!(reader.decode())?;
     // image is mut since we'll be editing it in place
-    log::trace!("Parsed the base image: {image:?}");
+    log::trace!("Parsed the base image");
 
     // Getting the data from the secret file. Reading it 2 bits at a time, as that's how much we can store in a pixel
     let secret_data = two_bit_iterator(secret_file)?;

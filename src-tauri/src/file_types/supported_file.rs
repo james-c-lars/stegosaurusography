@@ -13,6 +13,12 @@ use crate::error::ErrorType;
 #[derive(Debug, Clone, Copy, Serialize)]
 pub enum SupportedFileType {
     Png,
+    // TODO: Test which image types we can directly plug in with our existing image module
+    // Any sort of non-lossy format should probably work out-of-the-box with what we already have
+    // TODO: Add support for Open Office format files
+    // TODO: Add support for PDFs
+    // TODO: Add support for audio files
+    // TODO: Add support for video / GIFs
 }
 
 impl SupportedFileType {

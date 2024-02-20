@@ -4,14 +4,40 @@
     line-height: 24px;
     font-weight: 400;
 
-    color: #0f0f0f;
-    background-color: #f6f6f6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
+    
+    /* Custom Colors */
+    --bg-color: hsl(0, 0%, 90%);
+    --bg-low-contrast: hsl(0, 0%, 85%);
+    --bg-high-contrast: hsl(0, 0%, 95%);
+
+    --text-color: hsl(0, 0%, 6%);
+    --text-deemphasized: grey;
+
+    --accent-hue: 290;
+    --accent-saturation: 70%;
+    --accent-12: hsl(var(--accent-hue), var(--accent-saturation), 12%);
+    --accent-13: hsl(var(--accent-hue), var(--accent-saturation), 13%);
+    --accent-23: hsl(var(--accent-hue), var(--accent-saturation), 23%);
+    --accent-27: hsl(var(--accent-hue), var(--accent-saturation), 27%);
+    --accent-30: hsl(var(--accent-hue), var(--accent-saturation), 30%);
+    --accent-31: hsl(var(--accent-hue), var(--accent-saturation), 31%);
+    --accent-32: hsl(var(--accent-hue), var(--accent-saturation), 32%);
+    --accent-33: hsl(var(--accent-hue), var(--accent-saturation), 33%);
+
+    --accent-subtle: hsl(var(--accent-hue), 70%, 93%);
+
+    --text-on-accent: #f6f6f6;
+
+    --accept-color: darkgreen;
+    --cancel-color: darkred;
 }
 
 html, body {
@@ -19,10 +45,21 @@ html, body {
     margin: 0;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 @media (prefers-color-scheme: dark) {
     :root {
-        color: #f6f6f6;
-        background-color: #2f2f2f;
+        --bg-color: hsl(0, 0%, 14%);
+        --bg-low-contrast: hsl(0, 0%, 16%);
+        --bg-high-contrast: hsl(0, 0%, 12%);
+
+        --text-color: hsl(0, 0%, 95%);
+        --text-deemphasized: grey;
+
+        --accent-saturation: 100%;
+        --accent-subtle: hsl(var(--accent-hue), 25%, 14%);
     }
 
     a:hover {

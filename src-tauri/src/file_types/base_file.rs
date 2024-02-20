@@ -1,4 +1,4 @@
-use std::{fs::File, path::Path};
+use std::{fs::File, io::Seek, path::Path};
 
 use serde::Serialize;
 
@@ -45,8 +45,10 @@ impl BaseFile {
     }
 
     /// Encodes the secret file into this base file and outputs the results.
-    pub fn encode_to(&self, secret_file: &File, output_file: &mut File) -> Result<()> {
+    pub fn encode_to(&mut self, secret_file: &File, output_file: &mut File) -> Result<()> {
         let available_size = self.available_space()?;
+        base_context!(self.file.rewind())?;
+
         let secret_file_size = secret_context!(secret_file.metadata())?.len();
 
         if secret_file_size > available_size {
