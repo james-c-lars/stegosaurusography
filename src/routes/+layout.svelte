@@ -34,9 +34,14 @@
     }
 </script>
 
-<main class="app-view" class:nav-menu-open={navMenuOpen} bind:this={appView}
-      on:transitionend={transitionend} on:transitionstart={transitionstart}>
-    <AppBar bind:navMenuOpen={navMenuOpen} />
+<main
+    class="app-view"
+    class:nav-menu-open={navMenuOpen}
+    bind:this={appView}
+    on:transitionend={transitionend}
+    on:transitionstart={transitionstart}
+>
+    <AppBar bind:navMenuOpen />
     <NavMenu bind:open={navMenuVisible} />
     <slot />
 </main>

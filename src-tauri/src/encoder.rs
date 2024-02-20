@@ -26,7 +26,7 @@ impl Encoder {
         let secret_file = secret_context!(File::open(&secret_file_path))?;
         let output_file = output_context!(File::create(&output_file_path))?;
         log::trace!("Opened all files");
-        
+
         Encoder::check_for_duplicate_files(&base_file_path, &secret_file_path, &output_file_path)?;
         log::trace!("Ensured no duplicate files");
 

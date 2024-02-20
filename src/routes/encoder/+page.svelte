@@ -19,7 +19,7 @@
     async function encode() {
         // TODO: Need to get outputFile before invoking encode
 
-        let result = await invoke("encode", {
+        await invoke("encode", {
             baseFile,
             secretFile,
             outputFile,
@@ -66,8 +66,12 @@
     {/if}
 
     <!-- The button that finalizes user input and calls our encoding logic -->
-    <button class="encode-button" disabled={!(baseFile && secretFile)} on:click={encode} 
-            title={!(baseFile && secretFile) ? "Select a base file and a secret to encode into it" : ""}>
+    <button
+        class="encode-button"
+        disabled={!(baseFile && secretFile)}
+        on:click={encode}
+        title={!(baseFile && secretFile) ? "Select a base file and a secret to encode into it" : ""}
+    >
         Encode
     </button>
 </div>
@@ -103,11 +107,11 @@
 
         border: none; /* Buttons by default have a border */
         background: linear-gradient(90deg, var(--accent-30) 0%, var(--accent-33) 100%);
-        
+
         color: var(--text-on-accent);
         font-weight: bolder;
         font-size: 1.5em;
-        transition: font-size .1s; /* Font-size changes via hover effect */
+        transition: font-size 0.1s; /* Font-size changes via hover effect */
     }
 
     .encode-button:disabled {
@@ -125,7 +129,7 @@
         We make them the same size and shape as the labels that are actually
         used to interact with the input elements, so that focus looks right.
         Labels can't be focused, only input elements can be. */
-    input[name = "text-or-file"] {
+    input[name="text-or-file"] {
         appearance: none;
 
         position: absolute;
@@ -159,8 +163,8 @@
         transition: font-size 0.1s; /* Font-size changes via hover effect */
     }
 
-    .text-or-file:first-child {   
-        /* Curving the left side of the leftmost button */     
+    .text-or-file:first-child {
+        /* Curving the left side of the leftmost button */
         border-radius: var(--border-radius) 0 0 var(--border-radius);
         border-right: 0;
     }

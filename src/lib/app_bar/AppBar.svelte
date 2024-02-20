@@ -6,7 +6,7 @@
 
 <div class="app-bar">
     <!-- TODO: Make these icons, rather than text -->
-    <button id="menu-button" on:click={() => navMenuOpen = !navMenuOpen}>Menu</button>
+    <button id="menu-button" on:click={() => (navMenuOpen = !navMenuOpen)}>Menu</button>
     <button>Dark Mode</button>
 </div>
 

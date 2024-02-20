@@ -18,7 +18,7 @@
             const selection = await open({ multiple: false });
 
             // open() has a few different return types. This is condensing them down into string | undefined
-            selected_file = Array.isArray(selection) ? selection.at(0) : (selection ?? undefined);
+            selected_file = Array.isArray(selection) ? selection.at(0) : selection ?? undefined;
         }
     }
 </script>
@@ -85,7 +85,8 @@
         justify-content: space-between;
     }
 
-    .file-select-title, .file-select-path {
+    .file-select-title,
+    .file-select-path {
         position: relative; /* Needed so that it's in front of the aboslutely position background image */
         margin: 1rem 0;
         padding: 0.2rem 1rem;

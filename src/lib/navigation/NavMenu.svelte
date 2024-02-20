@@ -16,16 +16,31 @@
 </script>
 
 <nav class="nav-menu" hidden={!open}>
-    <a  href="/encoder" class="nav-button" hidden={!open} class:selected={currentTab === Tab.Encode}
-        on:click={() => currentTab = Tab.Encode}>
+    <a
+        href="/encoder"
+        class="nav-button"
+        hidden={!open}
+        class:selected={currentTab === Tab.Encode}
+        on:click={() => (currentTab = Tab.Encode)}
+    >
         Encode
     </a>
-    <a  href="/decoder" class="nav-button" hidden={!open} class:selected={currentTab === Tab.Decode}
-        on:click={() => currentTab = Tab.Decode}>
+    <a
+        href="/decoder"
+        class="nav-button"
+        hidden={!open}
+        class:selected={currentTab === Tab.Decode}
+        on:click={() => (currentTab = Tab.Decode)}
+    >
         Decode
     </a>
-    <a  href="/about" class="nav-button" hidden={!open} class:selected={currentTab === Tab.About}
-        on:click={() => currentTab = Tab.About}>
+    <a
+        href="/about"
+        class="nav-button"
+        hidden={!open}
+        class:selected={currentTab === Tab.About}
+        on:click={() => (currentTab = Tab.About)}
+    >
         About
     </a>
     <!-- TODO: Create a page for tweaking the appearance of the app. Switching between dark and light mode, tweaking --accent-hue in CSS. -->
@@ -69,7 +84,7 @@
 
     /* This pseudo element is the visual accent mark that shows in front of the selected <a> */
     .nav-button.selected::before {
-        content: '';
+        content: "";
 
         /* Used in math for centering the selection indicator */
         --diameter: 0.375rem;
