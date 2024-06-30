@@ -5,7 +5,7 @@
 
     // Represents whether the menu is toggled open or close
     // Used for state management
-    let navMenuOpen: boolean = false;
+    let navMenuOpen = true;
     // Represents whether any part of the menu is visible (due to CSS transitions)
     // Used for determining whether the menu elements should be hidden (in the tab order)
     let navMenuVisible: boolean = navMenuOpen;

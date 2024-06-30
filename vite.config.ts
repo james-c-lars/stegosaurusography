@@ -1,24 +1,14 @@
 // noinspection JSUnusedGlobalSymbols,JSUnusedLocalSymbols
 
 import { defineConfig } from "vite";
-// @ts-expect-error There are no types for this, and IDE has a fit, but this is fine.
 import { sveltekit } from "@sveltejs/kit/vite";
-import sveltePreprocess from "svelte-preprocess";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 // const mobile = process.env.TAURI_PLATFORM === "android" || process.env.TAURI_PLATFORM === "ios";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [
-        sveltekit({
-            preprocess: [
-                sveltePreprocess({
-                    typescript: true,
-                }),
-            ],
-        }),
-    ],
+    plugins: [sveltekit()],
 
     // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
     // prevent vite from obscuring rust errors

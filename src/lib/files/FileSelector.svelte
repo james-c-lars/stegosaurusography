@@ -52,6 +52,7 @@
         height: 100%;
         position: relative;
         padding: 0;
+        cursor: pointer;
 
         /* The image is in the background, so the flex will be for the top-info and the path */
         display: flex;

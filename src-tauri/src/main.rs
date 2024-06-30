@@ -65,7 +65,7 @@ mod requests {
 fn main() {
     // Set up logging
     let config_str = include_str!("./log_config.yaml");
-    let config = serde_yaml::from_str(config_str).expect("log_config.yaml improperly structured");
+    let config = serde_yml::from_str(config_str).expect("log_config.yaml improperly structured");
     log4rs::init_raw_config(config).expect("logging config couldn't initialize");
 
     tauri::Builder::default()

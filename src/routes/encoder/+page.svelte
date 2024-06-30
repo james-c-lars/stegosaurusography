@@ -5,14 +5,14 @@
 
     // Whether we are using user-entered text as the secret to encode into a file
     // The alternative is encoding a whole file in the base file
-    let textBasedSecret: boolean = false;
+    let textBasedSecret = false;
 
     // The file path into which a secret will be encoded
     let baseFile: string | undefined = undefined;
     // The file path that's a secret file that will be encoded into the base file
     let secretFile: string | undefined = undefined;
     // A file path that the encoded output file will be saved to
-    let outputFile: string | undefined = undefined;
+    const outputFile: string | undefined = undefined;
 
     // Once all the required information has been collected, this function is used
     // to call into our encoding functionality in Rust
