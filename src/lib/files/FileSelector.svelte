@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { open } from "@tauri-apps/api/dialog";
-    import { convertFileSrc } from "@tauri-apps/api/tauri";
+    import { open } from "@tauri-apps/plugin-dialog";
+    import { convertFileSrc } from "@tauri-apps/api/core";
     import "../../routes/styles.css";
 
     // Represents what kind of file is being selected
@@ -18,7 +18,7 @@
             const selection = await open({ multiple: false });
 
             // open() has a few different return types. This is condensing them down into string | undefined
-            selected_file = Array.isArray(selection) ? selection.at(0) : selection ?? undefined;
+            selected_file = Array.isArray(selection) ? selection.at(0) : (selection ?? undefined);
         }
     }
 </script>

@@ -1,7 +1,7 @@
 <script lang="ts">
     import FileSelector from "$lib/files/FileSelector.svelte";
-    import { invoke } from "@tauri-apps/api";
     import "../styles.css";
+    import { invoke } from "@tauri-apps/api/core";
 
     // Whether we are using user-entered text as the secret to encode into a file
     // The alternative is encoding a whole file in the base file
@@ -59,7 +59,7 @@
     {#if textBasedSecret}
         <!-- TODO: Need to style this textarea -->
         <!-- Where a user can enter text to directly be encoded -->
-        <textarea />
+        <textarea></textarea>
     {:else}
         <!-- The secret file selector -->
         <FileSelector bind:selected_file={secretFile} title="Secret File" />

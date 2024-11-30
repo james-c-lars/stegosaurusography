@@ -69,6 +69,8 @@ fn main() {
     log4rs::init_raw_config(config).expect("logging config couldn't initialize");
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_dialog::init())
         .invoke_handler(tauri::generate_handler![
             requests::encode,
             requests::decode,

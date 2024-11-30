@@ -1,6 +1,6 @@
 use std::{fs::File, io::BufReader};
 
-use image::{io::Reader, DynamicImage, GenericImageView, Pixel};
+use image::{DynamicImage, GenericImageView, ImageReader, Pixel};
 
 use crate::{error::ErrorType, file_types::supported_file::SupportedFile, HEADER_BYTES};
 
@@ -22,7 +22,7 @@ const BITS_PER_PIXEL: u64 = NON_ALPHA_CHANNELS as u64 * 2;
 const TWO_BIT_MASK: u8 = 0b00000011;
 
 /// Finds the amount of space in bytes, that can be used to store a secret file.
-pub fn available_size_of(file: &SupportedFile) -> std::result::Result<u64, ErrorType> {
+pub fn available_size_of(file: &SupportedFile) -> Result<u64, ErrorType> {
     let reader = reader_from_supported_file(file);
     let dimensions = reader.into_dimensions()?;
     log::trace!("Read the size of an image");
@@ -42,8 +42,8 @@ fn coord_iter(dimensions: (u32, u32)) -> impl Iterator<Item = (u32, u32, u8)> {
 }
 
 /// Converts a SupportedFile into an ImageReader.
-fn reader_from_supported_file(file: &SupportedFile) -> Reader<BufReader<&File>> {
-    Reader::with_format(
+fn reader_from_supported_file(file: &SupportedFile) -> ImageReader<BufReader<&File>> {
+    ImageReader::with_format(
         BufReader::new(file as &File),
         file.image_type().unwrap_or_else(|| {
             panic!(

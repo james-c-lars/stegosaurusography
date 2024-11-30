@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { save } from "@tauri-apps/api/dialog";
+    import { save } from "@tauri-apps/plugin-dialog";
     import FileInput from "./FileInput.svelte";
 
     export let selectedFile: string | undefined;
