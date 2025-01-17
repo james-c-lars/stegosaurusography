@@ -88,7 +88,7 @@
 
     .file-select-title,
     .file-select-path {
-        position: relative; /* Needed so that it's in front of the aboslutely position background image */
+        position: relative; /* Needed so that it's in front of the absolutely position background image */
         margin: 1rem 0;
         padding: 0.2rem 1rem;
     }

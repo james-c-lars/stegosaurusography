@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Upgrade All Dependencies" type="CompoundRunConfigurationType">
+    <toRun name="Update Dependencies" type="CargoCommandRunConfiguration" />
+    <toRun name="Upgrade Cargo File" type="CargoCommandRunConfiguration" />
+    <toRun name="Upgrade Dependencies" type="js.build_tools.npm" />
+    <method v="2" />
+  </configuration>
+</component>

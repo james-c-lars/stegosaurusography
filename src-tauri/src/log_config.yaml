@@ -16,7 +16,7 @@ appenders:
 
 root:
   appenders:
-  - console
+    - console
 
 loggers:
   stegosaurusography:

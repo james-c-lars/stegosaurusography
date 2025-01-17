@@ -1,14 +1,8 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="update" type="js.build_tools.npm" nameIsGenerated="true">
-    <package-json value="$PROJECT_DIR$/package.json" />
-    <command value="update" />
-    <node-interpreter value="project" />
-    <envs />
-    <method v="2" />
-  </configuration>
-  <configuration default="false" name="Update" type="CargoCommandRunConfiguration" factoryName="Cargo Command" nameIsGenerated="true">
-    <option name="command" value="update" />
+  <configuration default="false" name="Update Dependencies" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
+    <option name="command" value="update " />
     <option name="workingDirectory" value="file://$PROJECT_DIR$/src-tauri" />
+    <envs />
     <option name="emulateTerminal" value="true" />
     <option name="channel" value="DEFAULT" />
     <option name="requiredFeatures" value="true" />
@@ -16,7 +10,6 @@
     <option name="withSudo" value="false" />
     <option name="buildTarget" value="REMOTE" />
     <option name="backtrace" value="SHORT" />
-    <envs />
     <option name="isRedirectInput" value="false" />
     <option name="redirectInputPath" value="" />
     <method v="2" />

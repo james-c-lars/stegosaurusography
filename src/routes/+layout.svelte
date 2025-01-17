@@ -41,8 +41,8 @@
     on:transitionend={transitionend}
     on:transitionstart={transitionstart}
 >
-    <AppBar bind:navMenuOpen />
     <NavMenu bind:open={navMenuVisible} />
+    <AppBar bind:navMenuOpen />
     <slot />
 </main>
 

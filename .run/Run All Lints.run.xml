@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run All Lints" type="CompoundRunConfigurationType">
+    <toRun name="Run Cargo Format" type="CargoCommandRunConfiguration" />
+    <toRun name="Run Clippy Lints" type="CargoCommandRunConfiguration" />
+    <toRun name="Run Lints" type="js.build_tools.npm" />
+    <method v="2" />
+  </configuration>
+</component>

@@ -6,8 +6,8 @@
     export let dialogTitle = "Save File";
     export let inputFileExtensions: string[];
 
-    function selectFunction(): Promise<string | undefined> {
-        return save({
+    async function selectFunction(): Promise<string | undefined> {
+        const file = await save({
             title: dialogTitle,
             filters: [
                 {
@@ -15,7 +15,9 @@
                     extensions: inputFileExtensions,
                 },
             ],
-        }).then((file) => file ?? undefined);
+        });
+
+        return file ?? undefined;
     }
 </script>
 

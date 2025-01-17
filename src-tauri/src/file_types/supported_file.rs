@@ -81,7 +81,6 @@ impl SupportedFile {
 
 /// Implementing Deref and DerefMut is what allows us to use File methods directly from
 /// SupportedFile without any need for explicit conversion.
-
 impl Deref for SupportedFile {
     type Target = File;
 

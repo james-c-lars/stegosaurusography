@@ -12,7 +12,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
-    
+
     /* Custom Colors */
     --bg-color: hsl(0, 0%, 90%);
     --bg-low-contrast: hsl(0, 0%, 85%);

@@ -3,7 +3,6 @@
 import { defineConfig } from "vite";
 import { sveltekit } from "@sveltejs/kit/vite";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 // const mobile = process.env.TAURI_PLATFORM === "android" || process.env.TAURI_PLATFORM === "ios";
 
 // https://vitejs.dev/config/
